@@ -82,6 +82,7 @@ body {
 /**************** FORM ********************/
 .form-input {
     width: var(--form-width);
+    margin-bottom: 1rem !important;
 }
 
 .form-button {
@@ -92,6 +93,7 @@ body {
 #status-select,
 #location-select {
     width: var(--form-width-misc);
+    
 }
 
 

@@ -3,6 +3,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
+import { NewApplicationForm } from "./NewApplicationForm";
 // import { Outlet } from "react-router";
 
 export function Navbar() {
@@ -10,9 +11,7 @@ export function Navbar() {
     <>
       <h2>Navbar</h2>
       <div>
-        <Button>
-          <AddCircleOutlineIcon sx={{ marginRight: 1 }} /> New Application
-        </Button>
+        <NewApplicationForm />
       </div>
       <div>
         <Button>
