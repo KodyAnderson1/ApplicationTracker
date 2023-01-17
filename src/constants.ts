@@ -1,0 +1,14 @@
+export enum STATUS_TYPES {
+    REVIEW = "REVIEW",
+    REJECTED = "REJECTED",
+    ACCEPTED = "ACCEPTED",
+    INTERVIEW = "INTERVIEW",
+    ASSESSMENT = "ASSESSMENT",
+  };
+  
+export enum JOB_LOCATIONS {
+    REMOTE = "REMOTE",
+    IN_PERSON = "IN PERSON",
+    HYBRID = "HYBRID"
+  };
+  

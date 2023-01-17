@@ -1,0 +1,33 @@
+:root {
+    --form-width: 13rem;
+    --form-width-misc: 10.2rem;
+    background-color: lightgray;
+}
+
+.form-input {
+    width: var(--form-width);
+}
+
+.form-button {
+    margin-top: 1rem !important; 
+    width: var(--form-width);
+}
+
+#status-select, #location-select{
+    width: var(--form-width-misc);
+}
+
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10rem;
+    width: 20rem;
+    height: 30rem;
+}
+
+.form-container > h2 {
+    display: flex;
+    justify-content: center;
+}
