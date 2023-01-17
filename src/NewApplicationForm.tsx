@@ -3,19 +3,17 @@ import { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Box,
-  Button,
-  Stack,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, Button, Stack } from "@mui/material";
 import { ACTION_TYPES, formReducer, INITIAL_STATE } from "./formReducer";
 import { JOB_LOCATIONS, STATUS_TYPES } from "./constants";
 import { spliceSlice } from "./utils";
+
+/**
+ * Will have a vertical table with all the companies
+ *    already applied to (Set to remove duplicates)
+ * Have it be a DROPBOX so can change between job titles
+ * Have a click autofill position title
+ */
 
 export function NewApplicationForm() {
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
@@ -41,7 +39,7 @@ export function NewApplicationForm() {
   };
 
   return (
-    <Box component="form">
+    <form>
       <Stack spacing={2} direction="column">
         <div>
           <TextField
@@ -140,6 +138,6 @@ export function NewApplicationForm() {
           Submit
         </Button>
       </div>
-    </Box>
+    </form>
   );
 }

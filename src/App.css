@@ -1,19 +1,96 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
+
 :root {
+    
     --form-width: 13rem;
     --form-width-misc: 10.2rem;
-    background-color: lightgray;
+    --primary-navbar-color: #181818;
+    --primary-text-color: white;
+    --parimary-background-color: #2a2b2e;
+
 }
 
+html,
+body {
+    height:100% !important;
+    min-height:100% !important;
+    max-height:100% !important;
+    color: var(--primary-text-color);
+    background-color: var(--parimary-background-color);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+}
+
+/********************** OVERALL GRID **********************/
+.wrapper {
+    height:100%;
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 1fr;
+    grid-template-rows: 0.3fr 1.7fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "navigation header header"
+        "navigation content-wrapper content-wrapper"
+        "navigation content-wrapper content-wrapper";
+}
+
+.navigation {
+    grid-area: navigation;
+    background-color: var(--primary-navbar-color);
+    margin-left: -.5rem;
+    margin-top: -.4rem;
+    position: fixed; /* Set the navbar to fixed position */
+    height: 100%;
+}
+
+.header {
+    grid-area: header;
+    color: var(--primary-text-color);
+    margin-left: 1rem;
+}
+
+.content-wrapper {
+    height:87vh;
+    grid-area: content-wrapper;
+}
+
+/**************** Navbar *******************/
+
+.navigation h2 {
+    display: flex;
+    justify-content: center;
+}
+
+.navigation button {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: .5rem;
+    font-weight: bold;
+    background: none;
+	color: inherit;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.navigation button:hover {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+}
+
+
+/**************** FORM ********************/
 .form-input {
     width: var(--form-width);
 }
 
 .form-button {
-    margin-top: 1rem !important; 
+    margin-top: 1rem !important;
     width: var(--form-width);
 }
 
-#status-select, #location-select{
+#status-select,
+#location-select {
     width: var(--form-width-misc);
 }
 
@@ -27,7 +104,24 @@
     height: 30rem;
 }
 
-.form-container > h2 {
+.form-container>h2 {
     display: flex;
     justify-content: center;
 }
+
+.table-status {
+    width: 110;
+    height: 40;
+    padding: 0;
+    padding-left: 2;
+    padding-right: 2;
+    border-radius: 5;
+    font-size: 12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/****************************/

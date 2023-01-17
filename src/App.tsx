@@ -1,20 +1,27 @@
-import { useState, useReducer } from "react";
+// import { useState, useReducer } from "react";
 import "./App.css";
-import { Container } from "@mui/material";
-import { JOB_LOCATIONS, STATUS_TYPES } from "./constants";
+import { Container, Grid } from "@mui/material";
+// import { JOB_LOCATIONS, STATUS_TYPES } from "./constants";
 import { NewApplicationForm } from "./NewApplicationForm";
-import { DataTable } from "./DataTable";
+import { DataTable } from "./Table/DataTable";
+import { Stack } from "@mui/system";
+import { Navbar } from "./Navbar";
 
 function App() {
   return (
     <>
-      <Container sx={{ width: 250, height: 500 }} className="form-container">
-        <h2>Form</h2>
-        <NewApplicationForm />
-      </Container>
-      {/* <Container sx={{ width: 1980, height: 500 }}> */}
-      <DataTable />
-      {/* </Container> */}
+      <div className="wrapper">
+        <div className="navigation">
+          <Navbar />
+        </div>
+        <div className="header">
+          <h1>Welcome, User</h1>
+        </div>
+        <div className="content-wrapper">
+          {/* <NewApplicationForm /> */}
+          <DataTable />
+        </div>
+      </div>
     </>
   );
 }
@@ -36,7 +43,7 @@ export default App;
 		if (rejected, date.now)	
 	LINK TO STATUS UPDATE PAGE FOR COMPANY // *
 	Job Location (REMOTE, IN_PERSON) // *
-	(If IN_PERSON) -> Where
+	(If IN_PERSON) -> Where // *
 	
 	
 sorting per field
