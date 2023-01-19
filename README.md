@@ -25,14 +25,14 @@ The backend was built with Express.js and is in the `server` folder. It can be i
 The frontend was built with React and is in the folder `client`. It can be installed and run by creating a `.env.local` file in the `client folder` and adding a variable `REACT_APP_BASE_URL= ...` and then using `npm install` in the console. The react portion was created with create-a-react-app so `npm start` starts the app. 
 
 ## Current Development
-- [ ] Attatch form to state and database
+- [x] Attatch form to state and database
 - [ ] Finish Dashboard (Homepage)
   - [ ] Create a Notification Center
   - [ ] Create limited statistics on data (Pie chart?)
   - [x] Implement date logic and remove placeholder values
     - [x] Include logic when status changes to "interview" or "assessment" to ask/track a time/date
     - [x] Logic to track last status change and a user defined period to notify applications that need attention
-- [ ] Implement a form to update already submitted data
+- [ ] Implement a form to update existing applications
 - [ ] Make data tables more / clearly customizable
 - [ ] Include recommended programming stacks in data gathered/displayed
 
