@@ -3,6 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, Button, Box } fro
 import { ACTION_TYPES, formReducer, INITIAL_STATE } from "../state/formReducer";
 import { JOB_TYPE, STATUS_TYPES } from "../constants";
 import { spliceSlice } from "../utils";
+import { useAddNewApplicationMutation } from "state/api";
 
 /**
  *
@@ -15,15 +16,18 @@ import { spliceSlice } from "../utils";
 
 export function NewApplicationForm() {
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
+  const [addNewApplication, response] = useAddNewApplicationMutation();
   const [date, setDate] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Other stuff
-    dispatch({
-      type: ACTION_TYPES.RESET,
-      payload: INITIAL_STATE,
-    });
+    // console.log("🚀 ~ file: NewApplicationForm.jsx:18 ~ NewApplicationForm ~ state", state);
+    addNewApplication(state).unwrap();
+    // dispatch({
+    //   type: ACTION_TYPES.RESET,
+    //   payload: INITIAL_STATE,
+    // });
   };
 
   const handleChange = (e) => {
@@ -87,7 +91,7 @@ export function NewApplicationForm() {
             value={state.salary}
           />
         </div>
-        <div>
+        {/* <div>
           <TextField
             name="stack"
             id="stackFormId"
@@ -96,7 +100,7 @@ export function NewApplicationForm() {
             onChange={handleChange}
             value={state.stack}
           />
-        </div>
+        </div> */}
         <div>
           <FormControl sx={{ minWidth: "13.5rem" }}>
             <InputLabel id="status-select-label">Status</InputLabel>

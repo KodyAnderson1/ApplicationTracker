@@ -10,14 +10,30 @@ export const api = createApi({
       providesTags: ["User"],
     }),
     getDashboard: build.query({
-      query: () => "general/dashboard",
+      query: (id) => `client/dashboard/${id}`,
       providesTags: "Dashboard",
     }),
     getApplications: build.query({
       query: () => `client/applications`, // !  query: (id) => `client/applications/${id}`,
       providesTags: "Applications",
     }),
+    addNewApplication: build.mutation({
+      query: (payload) => ({
+        url: `client/applications/post`,
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
-export const { useGetUserQuery, useGetDashboardQuery, useGetApplicationsQuery } = api;
+export const {
+  useGetUserQuery,
+  useGetDashboardQuery,
+  useGetApplicationsQuery,
+  useAddNewApplicationMutation,
+} = api;

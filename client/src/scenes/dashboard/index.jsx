@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import { Dataset, PersonAdd, Assessment, Update } from "@mui/icons-material";
 import { Box, Button, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetApplicationsQuery, useGetDashboardQuery } from "state/api";
+import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
 import BreakdownChart from "components/BreakdownChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { formatDate, formatJobType, salaryFormatter, statusHelper } from "scenes/applications";
-import { STATUS_TYPES } from "constants";
+import { formatJobType, salaryFormatter, statusHelper } from "scenes/applications";
+// import { STATUS_TYPES } from "constants";
+import { useSelector } from "react-redux";
 
 const columns = [
   {
@@ -28,11 +29,11 @@ const columns = [
     headerName: "Position",
     flex: 0.45,
   },
-
   {
-    field: "location",
-    headerName: "Location",
+    field: "salary",
+    headerName: "Salary",
     flex: 0.25,
+    renderCell: (params) => salaryFormatter(params.value),
   },
   {
     field: "jobType",
@@ -41,35 +42,10 @@ const columns = [
     renderCell: (params) => formatJobType(params.value),
   },
   {
-    field: "salary",
-    headerName: "Salary",
+    field: "location",
+    headerName: "Location",
     flex: 0.25,
-    renderCell: (params) => salaryFormatter(params.value),
   },
-  // {
-  //   field: "createdAt",
-  //   headerName: "Applied On",
-  //   flex: 0.35,
-  //   renderCell: (params) => formatDate(params.value),
-  // },
-  // {
-  //   field: "updatedAt",
-  //   headerName: "Last Updated",
-  //   flex: 0.35,
-  //   renderCell: (params) => formatDate(params.value),
-  // },
-  // {
-  //   field: "stack",
-  //   headerName: "Stack",
-  //   flex: 0.35,
-  // },
-  // {
-  //   field: "needsUpdate",
-  //   headerName: "",
-  //   flex: 0.15,
-  //   headerAlign: "center",
-  //   renderCell: (params) => (true ? <NewReleases /> : <></>),
-  // },
   {
     field: "url",
     headerName: "URL",
@@ -86,59 +62,12 @@ const columns = [
   },
 ];
 
-function dateChecker(date) {
-  date = new Date(formatDate(date));
-  const oldTime = date.getTime();
-  const timeNow = new Date().getTime();
-
-  return Math.floor((timeNow - oldTime) / (1000 * 3600 * 24));
-}
-
-// ! Keep widgitData here so state can be managed and updated quickly? Put applications in a useContext?!
+// ! Put applications in a useContext?!
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const [widgitData, setWidgitData] = useState({
-    attentionNeeded: 0,
-    numInterviews: 0,
-    numAssessments: 0,
-    totalApplications: 0,
-    underReview: 0,
-    rejected: 0,
-  });
-
-  const { data, isLoading } = useGetApplicationsQuery();
-
-  // Backend not ready for this // ! Use temp consts instead
-  // const [data, isLoading] = useGetDashboardQuery();
-
-  useMemo(() => {
-    if (!isLoading || data) {
-      let interviews = 0;
-      let assessments = 0;
-      let total = 0;
-      let review = 0;
-      let rejected = 0;
-      let attention = 0;
-
-      data.forEach((element) => {
-        if (element.status === STATUS_TYPES.INTERVIEW) interviews++;
-        if (element.status === STATUS_TYPES.REJECTED) rejected++;
-        if (element.status === STATUS_TYPES.REVIEW) review++;
-        if (element.status === STATUS_TYPES.ASSESSMENT) assessments++;
-        if (dateChecker(element.updatedAt) >= 1) attention++;
-        total++;
-      });
-      setWidgitData({
-        attentionNeeded: attention,
-        numInterviews: interviews,
-        numAssessments: assessments,
-        totalApplications: total,
-        underReview: review,
-        rejected: rejected,
-      });
-    }
-  }, [data, isLoading]);
+  const userId = useSelector((state) => state.global.userId);
+  const { data, isLoading } = useGetDashboardQuery(userId);
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -171,23 +100,20 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <StatBox
           title="Total Applications"
-          // value={data.length}
-          value={widgitData.totalApplications}
+          value={data?.total || 0}
           description="All Time"
           icon={<Dataset sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
         <StatBox
           title="Interview(s)"
-          value={widgitData.numInterviews}
-          // value={data.filter((element) => element.status === STATUS_TYPES.INTERVIEW).length}
+          value={data?.interview || 0}
           description="Upcoming"
           icon={<PersonAdd sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
         <StatBox
           title="Under Review"
-          value={widgitData.underReview}
-          // value={data.filter((element) => element.status === STATUS_TYPES.INTERVIEW).length}
-          description="Keep Checking!"
+          value={data?.review || 0}
+          // description="Keep Checking!"
           icon={<PersonAdd sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
 
@@ -200,21 +126,21 @@ const Dashboard = () => {
           {/* <NotificationCenter /> */}
         </Box>
         <StatBox
-          title="Attention Needed"
-          value={widgitData.attentionNeeded}
-          description="Upcoming"
+          title="Need Status Updates"
+          value={data?.attention || 0} // !
+          description="7+ Days Old"
           icon={<Update sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
 
         <StatBox
           title="Assessment(s)"
-          value={widgitData.numAssessments}
+          value={data?.assessment || 0}
           description="Upcoming"
           icon={<Assessment sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
         <StatBox
           title="Rejected"
-          value={widgitData.rejected}
+          value={data?.rejected || 0}
           description=""
           icon={<Assessment sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
@@ -251,7 +177,7 @@ const Dashboard = () => {
           <DataGrid
             loading={isLoading || !data}
             getRowId={(row) => row._id}
-            rows={data || []}
+            rows={data?.applications || []}
             columns={columns}
           />
         </Box>
