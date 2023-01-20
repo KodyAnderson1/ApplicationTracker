@@ -28,9 +28,9 @@ The frontend was built with React and is in the folder `client`. It can be insta
 - [x] Attatch form to state and database
 - [ ] Finish Dashboard (Homepage)
   - [ ] Create a Notification Center
-  - [ ] Create limited statistics on data (Pie chart?)
+  - [x] Create limited statistics on data
   - [x] Implement date logic and remove placeholder values
-    - [x] Include logic when status changes to "interview" or "assessment" to ask/track a time/date
+    - [ ] Include logic when status changes to "interview" or "assessment" to ask/track a time/date
     - [x] Logic to track last status change and a user defined period to notify applications that need attention
 - [ ] Implement a form to update existing applications
 - [ ] Make data tables more / clearly customizable
