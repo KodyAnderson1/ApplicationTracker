@@ -37,14 +37,20 @@ The frontend was built with React and is in the folder `client`. It can be insta
 - [ ] Implement a form to update existing applications
 - [ ] Make data tables more / clearly customizable
 - [ ] Include recommended programming stacks in data gathered/displayed
+- [ ] Form Validation
+  - [ ] Implement React-Hook-Form 
+- [ ] Details page for each application with more details
+  - [ ]  Programming Stack listed
+  - [ ]  If Hybrid or in-person, all locations listed
+- [ ] Implement searchbar logic for search in header - Opens up specific application's details page
+- [ ] Implement log in/out && users
+  - [ ] Create Account Page
+  - [ ] Log In Page
+- [ ] Implement an easy way of updating status without going to details page
 
 
 ## Future Development
 - [ ] Implement an administrator view
-- [ ] Implement searchbar logic for search in header
-- [ ] Implement log in/out && users
-  - [ ] Create Account Page
-  - [ ] Log In Page
 - [ ] Implement user settings
   - [ ] Update user information
 - [ ] Add a Jobs section that can track current jobs / relevant data
