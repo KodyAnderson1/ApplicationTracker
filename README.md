@@ -33,6 +33,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
     - [ ] Logic when status changes to "interview" or "assessment" to ask/track a time/date
     - [ ] Logic to track last status change && if over 7 days, notifies (Started)
       - [ ] Put Link to actual application in Notification Center for ease of change
+      - [x] "Needs Attention" widgit have an actual count
 - [ ] Implement a form to update existing applications
 - [ ] Make data tables more / clearly customizable
 - [ ] Include recommended programming stacks in data gathered/displayed
