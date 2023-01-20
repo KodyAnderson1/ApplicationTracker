@@ -34,10 +34,10 @@ export function NewApplicationForm() {
     // Other stuff
     // console.log("🚀 ~ file: NewApplicationForm.jsx:18 ~ NewApplicationForm ~ state", state);
     addNewApplication(state).unwrap();
-    // dispatch({
-    //   type: ACTION_TYPES.RESET,
-    //   payload: INITIAL_STATE,
-    // });
+    dispatch({
+      type: ACTION_TYPES.RESET,
+      payload: INITIAL_STATE,
+    });
   };
 
   const handleChange = (e) => {
@@ -74,7 +74,7 @@ export function NewApplicationForm() {
           <TextField
             name="positionTitle"
             id="positionTitleFormId"
-            label="Position Title"
+            label="Position"
             variant="outlined"
             onChange={handleChange}
             value={state.positionTitle}
@@ -100,7 +100,7 @@ export function NewApplicationForm() {
             value={state.salary}
           />
         </div>
-        {/* <div>
+        <div>
           <TextField
             name="stack"
             id="stackFormId"
@@ -109,7 +109,7 @@ export function NewApplicationForm() {
             onChange={handleChange}
             value={state.stack}
           />
-        </div> */}
+        </div>
         <div>
           <FormControl sx={{ minWidth: "13.5rem" }}>
             <InputLabel id="status-select-label">Status</InputLabel>
@@ -120,7 +120,7 @@ export function NewApplicationForm() {
               value={state.status}
               label="Status"
               onChange={handleChange}>
-              <MenuItem value={STATUS_TYPES.REVIEW}>Review</MenuItem>
+              <MenuItem value={STATUS_TYPES.REVIEW}>Under Review</MenuItem>
               <MenuItem value={STATUS_TYPES.REJECTED}>Rejected</MenuItem>
               <MenuItem value={STATUS_TYPES.ACCEPTED}>Accepted</MenuItem>
               <MenuItem value={STATUS_TYPES.INTERVIEW}>Interview</MenuItem>

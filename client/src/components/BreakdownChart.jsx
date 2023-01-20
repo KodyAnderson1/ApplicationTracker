@@ -4,7 +4,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 // import { useGetSalesQuery } from "state/api";
 
-const BreakdownChart = ({ isDashboard = false, data, total }) => {
+const BreakdownChart = ({ isDashboard = false, data = {}, total = 0 }) => {
   // console.log("🚀 ~ file: BreakdownChart.jsx:7 ~ BreakdownChart ~ data", data);
 
   //   const { data, isLoading } = useGetSalesQuery();
