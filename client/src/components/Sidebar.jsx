@@ -20,7 +20,6 @@ import {
   HomeOutlined,
   Groups2Outlined,
   PublicOutlined,
-  // TodayOutlined,
   CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
   SettingsOutlined,
@@ -38,15 +37,17 @@ const navItems = [
   {
     text: "Add_New",
     icon: <AddCircleOutlineIcon />,
+    isDisabled: false,
   },
   {
     text: "Applications",
     icon: <TableChartIcon />,
+    isDisabled: false,
   },
-
   {
     text: "Notifications",
     icon: <NotificationsNoneIcon />,
+    isDisabled: true,
   },
 
   {
@@ -56,14 +57,17 @@ const navItems = [
   {
     text: "User Privileges",
     icon: <AdminPanelSettingsOutlined />,
+    isDisabled: true,
   },
   {
     text: "Admin Settings",
     icon: <PublicOutlined />,
+    isDisabled: true,
   },
   {
     text: "Notification Settings",
     icon: <CalendarMonthOutlined />,
+    isDisabled: true,
   },
 ];
 
@@ -112,7 +116,7 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile, us
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon }) => {
+              {navItems.map(({ text, icon, isDisabled }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -125,6 +129,7 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile, us
                 return (
                   <ListItem key={text} disablePadding>
                     <ListItemButton
+                      disabled={isDisabled}
                       onClick={() => {
                         navigate(`/${lcText}`);
                         setActive(lcText);

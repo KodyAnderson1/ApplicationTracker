@@ -1,7 +1,7 @@
 import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import { Dataset, PersonAdd, Assessment, Update } from "@mui/icons-material";
+import { Dataset, PersonAdd, Assessment, Update, Search } from "@mui/icons-material";
 import { Box, Button, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetDashboardQuery } from "state/api";
@@ -11,6 +11,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { formatJobType, salaryFormatter, statusHelper } from "scenes/applications";
 // import { STATUS_TYPES } from "constants";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   {
@@ -68,6 +69,7 @@ const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const userId = useSelector((state) => state.global.userId);
   const { data, isLoading } = useGetDashboardQuery(userId);
+  const navigate = useNavigate();
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -75,6 +77,9 @@ const Dashboard = () => {
         <Header title="DASHBOARD" subtitle={`Welcome to your dashboard, ${"Kody"}.`} />
         <Box>
           <Button
+            onClick={() => {
+              navigate(`/add_new`);
+            }}
             sx={{
               backgroundColor: theme.palette.secondary.light,
               color: theme.palette.background.alt,
@@ -114,7 +119,7 @@ const Dashboard = () => {
           title="Under Review"
           value={data?.review || 0}
           // description="Keep Checking!"
-          icon={<PersonAdd sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
+          icon={<Search sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
 
         <Box
@@ -123,6 +128,7 @@ const Dashboard = () => {
           backgroundColor={theme.palette.background.alt}
           p="1rem"
           borderRadius="0.55rem">
+          Notification Center
           {/* <NotificationCenter /> */}
         </Box>
         <StatBox
@@ -188,9 +194,21 @@ const Dashboard = () => {
           p="1.5rem"
           borderRadius="0.55rem">
           <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
-            {`Placeholder Title`}
+            Application Breakdown
           </Typography>
-          <BreakdownChart isDashboard={true} />
+          <BreakdownChart
+            isDashboard={true}
+            data={{
+              rejected: data?.rejected,
+              interview: data?.interview,
+              review: data?.review,
+              assessment: data?.assessment,
+            }}
+            total={data?.total || 0}
+          />
+          <Typography p="0 0.6rem" fontSize="0.8rem" sx={{ color: theme.palette.secondary[200] }}>
+            Breakdown of the current status of all applications.
+          </Typography>
         </Box>
       </Box>
     </Box>

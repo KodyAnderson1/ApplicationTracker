@@ -1,5 +1,14 @@
 import { useState, useReducer } from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, Button, Box } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Button,
+  Box,
+  useTheme,
+} from "@mui/material";
 import { ACTION_TYPES, formReducer, INITIAL_STATE } from "../state/formReducer";
 import { JOB_TYPE, STATUS_TYPES } from "../constants";
 import { spliceSlice } from "../utils";
@@ -15,6 +24,7 @@ import { useAddNewApplicationMutation } from "state/api";
  */
 
 export function NewApplicationForm() {
+  const theme = useTheme();
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const [addNewApplication, response] = useAddNewApplicationMutation();
   const [date, setDate] = useState(null);
@@ -45,11 +55,10 @@ export function NewApplicationForm() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          m: "3rem auto",
+          m: "6rem 8rem",
           width: "fit-content",
           gap: "1.5rem",
         }}>
-        {/* <Stack spacing={2} direction="column"> */}
         <div>
           <TextField
             name="companyName"

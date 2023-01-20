@@ -7,6 +7,7 @@ import {
   SettingsOutlined,
   ArrowDropDOwnOutlined,
   ArrowDropDownOutlined,
+  GitHub,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
@@ -61,8 +62,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, user }) => {
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
-          <IconButton disabled>
-            <SettingsOutlined sx={{ fontSize: "25px" }} />
+          <IconButton
+            onClick={() => window.open(`https://github.com/KodyAnderson1/ApplicationTracker`)}>
+            <GitHub sx={{ fontSize: "25px" }} />
           </IconButton>
 
           <FlexBetween>
