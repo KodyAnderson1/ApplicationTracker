@@ -30,8 +30,9 @@ The frontend was built with React and is in the folder `client`. It can be insta
   - [ ] Create a Notification Center
   - [x] Create limited statistics on data
   - [x] Implement date logic and remove placeholder values
-    - [ ] Include logic when status changes to "interview" or "assessment" to ask/track a time/date
-    - [x] Logic to track last status change and a user defined period to notify applications that need attention
+    - [ ] Logic when status changes to "interview" or "assessment" to ask/track a time/date
+    - [ ] Logic to track last status change && if over 7 days, notifies (Started)
+      - [ ] Put Link to actual application in Notification Center for ease of change
 - [ ] Implement a form to update existing applications
 - [ ] Make data tables more / clearly customizable
 - [ ] Include recommended programming stacks in data gathered/displayed
