@@ -40,7 +40,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
       - [x] "Needs Attention" widgit have an actual count
 - [ ] For the Position input on the new application form, implment an autocomplete form with values previously submitted
 - [x] Implement a form to update existing applications
-- [-] Include recommended programming stacks in data gathered/displayed
+- [x] Include recommended programming stacks in data gathered/displayed
 - [ ] Form Validation
   - [ ] Implement React-Hook-Form or Formik
 - [x] Details page for each application with more details
