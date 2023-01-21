@@ -38,7 +38,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
     - [ ] Logic to track last status change && if over 7 days, notifies (Started)
       - [ ] Put Link to actual application in Notification Center for ease of change
       - [x] "Needs Attention" widgit have an actual count
-- [ ] For the Position input on the new application form, implment an autocomplete form with values previously submitted
+- [x] For the Position input on the new application form, implment an autocomplete form with values previously submitted
 - [x] Implement a form to update existing applications
 - [x] Include recommended programming stacks in data gathered/displayed
 - [ ] Form Validation
@@ -49,7 +49,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
   - [ ] Create Account Page
   - [ ] Log In Page
 - [ ] Implement an easy way of updating status without going to details page
-- [ ] Implement a "stack" of (5 - 7?) most recently applied to jobs on new form page
+- [x] Implement a "stack" of (5 - 7?) most recently applied to jobs on new form page
 
 ## Future Development
 
