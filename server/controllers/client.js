@@ -69,13 +69,47 @@ export const getDashboardStats = async (req, res) => {
 export const addNewAplication = async (req, res) => {
   try {
     const user = await User.findById("63701cc1f03239b7f700000e");
-
     const app = await new Application(req.body).save();
 
     user.applications.push(app.id);
     user.save();
 
     res.status(200).json(app);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getSingleApplication = async (req, res) => {
+  try {
+    const application = await Application.findById(req.params.id);
+    res.status(200).json(application);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const updateApplication = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    // console.log("🚀 ~ file: client.js:96 ~ updateApplication ~ _id", _id);
+    // console.log("🚀 ~ file: client.js:98 ~ updateApplication ~ id", req.body);
+    const application = req.body;
+    // const results = await application.updateOne();
+    // console.log("🚀 ~ file: client.js:100 ~ updateApplication ~ results", results);
+
+    const doc = await Application.findOneAndUpdate({ _id: application._id }, application);
+    console.log("🚀 ~ file: client.js:103 ~ updateApplication ~ doc", doc);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const deleteApplication = async (req, res) => {
+  try {
+    Application.deleteOne({ _id: req.params.id }).then(
+      res.status(200).json({ message: "Delete Successful!" })
+    );
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

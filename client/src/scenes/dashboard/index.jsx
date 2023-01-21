@@ -8,60 +8,11 @@ import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
 import BreakdownChart from "components/BreakdownChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { formatJobType, salaryFormatter, statusHelper } from "scenes/applications";
-// import { STATUS_TYPES } from "constants";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-const columns = [
-  {
-    field: "status",
-    headerName: "Status",
-    flex: 0.4,
-    renderCell: (params) => statusHelper(params.value),
-  },
-  {
-    field: "companyName",
-    headerName: "Company Name",
-    flex: 0.35,
-  },
-  {
-    field: "positionTitle",
-    headerName: "Position",
-    flex: 0.45,
-  },
-  {
-    field: "salary",
-    headerName: "Salary",
-    flex: 0.25,
-    renderCell: (params) => salaryFormatter(params.value),
-  },
-  {
-    field: "jobType",
-    headerName: "Job Type",
-    flex: 0.25,
-    renderCell: (params) => formatJobType(params.value),
-  },
-  {
-    field: "location",
-    headerName: "Location",
-    flex: 0.25,
-  },
-  {
-    field: "url",
-    headerName: "URL",
-    flex: 0.22,
-    renderCell: (params) => {
-      return params.value ? (
-        <Button onClick={(e) => window.open(`${params.value}`)} variant="contained">
-          Go
-        </Button>
-      ) : (
-        <></>
-      );
-    },
-  },
-];
+import ChipComponent from "components/ChipComponent";
+import { formatJobType, salaryFormatter } from "utils";
 
 // ! Put applications in a useContext?!
 const Dashboard = () => {
@@ -70,6 +21,72 @@ const Dashboard = () => {
   const userId = useSelector((state) => state.global.userId);
   const { data, isLoading } = useGetDashboardQuery(userId);
   const navigate = useNavigate();
+
+  const columns = [
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.35,
+      renderCell: (params) => (
+        <ChipComponent params={params.value} sx={{ fontSize: "15px", width: "140px" }} />
+      ),
+    },
+    {
+      field: "companyName",
+      headerName: "Company Name",
+      flex: 0.3,
+    },
+    {
+      field: "positionTitle",
+      headerName: "Position",
+      flex: 0.45,
+    },
+    {
+      field: "salary",
+      headerName: "Salary",
+      flex: 0.25,
+      renderCell: (params) => salaryFormatter(params.value),
+    },
+    {
+      field: "jobType",
+      headerName: "Job Type",
+      flex: 0.25,
+      renderCell: (params) => formatJobType(params.value),
+    },
+    {
+      field: "location",
+      headerName: "Location",
+      flex: 0.25,
+    },
+    {
+      field: "url",
+      headerName: "URL",
+      flex: 0.2,
+      renderCell: (params) => {
+        return params.value ? (
+          <Button onClick={(e) => window.open(`${params.value}`)} variant="contained">
+            Go
+          </Button>
+        ) : (
+          <></>
+        );
+      },
+    },
+    {
+      field: "_id",
+      headerName: "Details",
+      flex: 0.19,
+      renderCell: (params) => {
+        return params.value ? (
+          <Button onClick={() => navigate(`/details/${params.value}`)} variant="contained">
+            Go
+          </Button>
+        ) : (
+          <></>
+        );
+      },
+    },
+  ];
 
   return (
     <Box m="1.5rem 2.5rem">

@@ -3,7 +3,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
 
   reducerPath: "adminAPI",
-  tagTypes: ["User", "Dashboard", "Applications"],
+  tagTypes: ["User", "Dashboard", "Applications", "SingleApplication"],
   endpoints: (build) => ({
     getUser: build.query({
       query: (id) => `general/user/${id}`,
@@ -14,8 +14,12 @@ export const api = createApi({
       providesTags: "Dashboard",
     }),
     getApplications: build.query({
-      query: () => `client/applications`, // !  query: (id) => `client/applications/${id}`,
+      query: () => `client/applications`, // !  query: (id) => `client/applications/${id}`, <- userId
       providesTags: "Applications",
+    }),
+    getSingleApplication: build.query({
+      query: (id) => `client/single/${id}`,
+      providesTags: "SingleApplication",
     }),
     addNewApplication: build.mutation({
       query: (payload) => ({
@@ -28,6 +32,24 @@ export const api = createApi({
       }),
       invalidatesTags: ["Applications"],
     }),
+    updateApplication: build.mutation({
+      query: (payload, id) => ({
+        url: `client/applications/${id}`,
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["Applications"],
+    }),
+    deleteApplication: build.mutation({
+      query: (id) => ({
+        url: `client/applications/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
@@ -36,4 +58,7 @@ export const {
   useGetDashboardQuery,
   useGetApplicationsQuery,
   useAddNewApplicationMutation,
+  useGetSingleApplicationQuery,
+  useUpdateApplicationMutation,
+  useDeleteApplicationMutation,
 } = api;

@@ -29,6 +29,9 @@ const ApplicationSchema = new mongoose.Schema(
     stack: {
       type: Array,
     },
+    user_id: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

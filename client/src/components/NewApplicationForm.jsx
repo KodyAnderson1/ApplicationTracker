@@ -8,11 +8,14 @@ import {
   Button,
   Box,
   useTheme,
+  Tooltip,
 } from "@mui/material";
 import { ACTION_TYPES, formReducer, INITIAL_STATE } from "../state/formReducer";
 import { JOB_TYPE, STATUS_TYPES } from "../constants";
-import { spliceSlice } from "../utils";
+import { spliceSlice, stackToArray } from "../utils";
 import { useAddNewApplicationMutation } from "state/api";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 /**
  *
@@ -24,20 +27,20 @@ import { useAddNewApplicationMutation } from "state/api";
  */
 
 export function NewApplicationForm() {
-  const theme = useTheme();
+  // const theme = useTheme();
+  const userId = useSelector((state) => state.global.userId);
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const [addNewApplication, response] = useAddNewApplicationMutation();
-  const [date, setDate] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Other stuff
-    // console.log("🚀 ~ file: NewApplicationForm.jsx:18 ~ NewApplicationForm ~ state", state);
-    addNewApplication(state).unwrap();
+    const modifiedState = { ...state, stack: stackToArray(state.stack), user_id: userId };
+    addNewApplication(modifiedState);
     dispatch({
       type: ACTION_TYPES.RESET,
       payload: INITIAL_STATE,
     });
+    toast.success("Submitted!");
   };
 
   const handleChange = (e) => {
@@ -100,16 +103,18 @@ export function NewApplicationForm() {
             value={state.salary}
           />
         </div>
-        <div>
-          <TextField
-            name="stack"
-            id="stackFormId"
-            label="Programming Stack"
-            variant="outlined"
-            onChange={handleChange}
-            value={state.stack}
-          />
-        </div>
+        <Tooltip title={"Format as Comma separated values!"}>
+          <div>
+            <TextField
+              name="stack"
+              id="stackFormId"
+              label="Programming Stack"
+              variant="outlined"
+              onChange={handleChange}
+              value={state.stack}
+            />
+          </div>
+        </Tooltip>
         <div>
           <FormControl sx={{ minWidth: "13.5rem" }}>
             <InputLabel id="status-select-label">Status</InputLabel>
