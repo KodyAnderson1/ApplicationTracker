@@ -1,4 +1,4 @@
-import { Box, Button, Grid, useTheme } from "@mui/material";
+import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import EditApplicationForm from "components/EditApplicationForm";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
@@ -13,13 +13,9 @@ import { Edit, EditOff, DeleteForever, Check } from "@mui/icons-material/";
 import { toast } from "react-toastify";
 import ListOfApplications from "components/ListOfApplications";
 import { ACTION_TYPES, formReducer } from "state/formReducer";
-import { stackToArray } from "utils";
 import { useSelector } from "react-redux";
 
-// ! Add a useContext for applications per user and then only make DB calls per page if ID isnt found with what is already here
-// ! DONT FORGET TO UPDATE WITH _IDS!!!!! ^^^
 // ! Find out why stackChips wouldn't work w/o its own state.
-// ! Applications page no longer updates with state change? WHY
 
 const ApplicationDetails = () => {
   const theme = useTheme();
@@ -29,11 +25,12 @@ const ApplicationDetails = () => {
   const userId = useSelector((state) => state.global.userId);
 
   const [editable, setIsEditable] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const { data, isLoading } = useGetSingleApplicationQuery(appId);
   const [state, dispatch] = useReducer(formReducer, data);
 
   const [deleteApp] = useDeleteApplicationMutation();
-  const [updateApplication, response] = useUpdateApplicationMutation();
+  const [updateApplication] = useUpdateApplicationMutation();
   const [stackChips, setStackChips] = useState();
 
   useEffect(() => {
@@ -46,12 +43,15 @@ const ApplicationDetails = () => {
     }
   }, [data, isLoading]);
 
-  const handleEditable = () => setIsEditable(!editable);
+  const handleEditable = () => {
+    setIsEditable(!editable);
+    setConfirmDelete(false);
+  };
 
   const handleDelete = () => {
-    // console.log(state._id);
     deleteApp(state._id);
-    toast.success("Application Deleted (Not really yet)");
+    toast.success("Application Deleted");
+    setConfirmDelete(false);
     navigate("/applications");
   };
 
@@ -60,7 +60,8 @@ const ApplicationDetails = () => {
     const modifiedState = { ...state, stack: stackChips, user_id: userId };
     setStackChips(modifiedState.stack);
     updateApplication(modifiedState, state._id);
-
+    handleEditable();
+    setConfirmDelete(false);
     toast.success("Updated!");
   };
 
@@ -71,6 +72,42 @@ const ApplicationDetails = () => {
     });
   };
 
+  const deleteButtons = confirmDelete ? (
+    <>
+      <Box>
+        <Button
+          onClick={handleDelete}
+          sx={{
+            backgroundColor: "red",
+            color: "white",
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}>
+          <DeleteForever sx={{ mr: "10px" }} />
+          Confirm Delete
+        </Button>
+      </Box>
+    </>
+  ) : (
+    <>
+      <Box>
+        <Button
+          onClick={() => setConfirmDelete(!confirmDelete)}
+          sx={{
+            backgroundColor: "red",
+            color: "white",
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}>
+          <DeleteForever sx={{ mr: "10px" }} />
+          Delete
+        </Button>
+      </Box>
+    </>
+  );
+
   if (isLoading || !data || !state) return <h1>Loading...</h1>;
 
   return (
@@ -80,20 +117,7 @@ const ApplicationDetails = () => {
         <Box display="flex" gap={2}>
           {editable ? (
             <>
-              <Box>
-                <Button
-                  onClick={handleDelete}
-                  sx={{
-                    backgroundColor: "red",
-                    color: "white",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    padding: "10px 20px",
-                  }}>
-                  <DeleteForever sx={{ mr: "10px" }} />
-                  Delete
-                </Button>
-              </Box>
+              {deleteButtons}
               <Box>
                 <Button
                   color="success"
@@ -139,7 +163,13 @@ const ApplicationDetails = () => {
           />
         </Grid>
         <Grid item xs={3} sx={{ height: "55vh", overflowY: "scroll" }}>
-          <ListOfApplications />
+          <Typography
+            variant="h3"
+            color={theme.palette.secondary[300]}
+            sx={{ display: "flex", justifyContent: "center" }}>
+            All Applications
+          </Typography>
+          <ListOfApplications currId={state?._id || data._id || null} />
         </Grid>
       </Grid>
     </Box>

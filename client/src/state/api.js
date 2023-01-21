@@ -11,15 +11,15 @@ export const api = createApi({
     }),
     getDashboard: build.query({
       query: (id) => `client/dashboard/${id}`,
-      providesTags: "Dashboard",
+      providesTags: ["Dashboard"],
     }),
     getApplications: build.query({
-      query: () => `client/applications`, // !  query: (id) => `client/applications/${id}`, <- userId
-      providesTags: "Applications",
+      query: () => `client/applications`,
+      providesTags: ["Applications"],
     }),
     getSingleApplication: build.query({
       query: (id) => `client/single/${id}`,
-      providesTags: "SingleApplication",
+      providesTags: ["SingleApplication"],
     }),
     addNewApplication: build.mutation({
       query: (payload) => ({
@@ -41,14 +41,14 @@ export const api = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-      invalidatesTags: ["Applications"],
+      invalidatesTags: ["Applications", "SingleApplication"],
     }),
     deleteApplication: build.mutation({
       query: (id) => ({
         url: `client/applications/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Applications"],
+      invalidatesTags: ["Applications", "SingleApplication"],
     }),
   }),
 });

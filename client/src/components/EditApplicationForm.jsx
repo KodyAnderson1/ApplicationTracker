@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -13,6 +14,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { formatDate } from "utils";
+import { useTheme } from "@emotion/react";
 
 const EditApplicationForm = ({
   isDisabled = false,
@@ -21,12 +24,16 @@ const EditApplicationForm = ({
   setStackChips,
   stackChips,
 }) => {
+  const theme = useTheme();
+
   return (
     <>
       <Box component="form" p="2rem">
         <Box m="0 0 1rem 0" display="flex">
           <Box m="0 1rem 0 0">
             <TextField
+              // fullWidth
+              sx={{ width: "15rem" }}
               name="companyName"
               disabled={isDisabled}
               id="companyName"
@@ -37,9 +44,10 @@ const EditApplicationForm = ({
             />
           </Box>
           <Box>
-            <FormControl sx={{ minWidth: "13.5rem" }}>
+            <FormControl sx={{ width: "15rem" }}>
               <InputLabel id="status-select-label">Status</InputLabel>
               <Select
+                // fullWidth
                 disabled={isDisabled}
                 name="status"
                 labelId="status-select-label"
@@ -66,10 +74,12 @@ const EditApplicationForm = ({
               variant="outlined"
               value={data?.positionTitle}
               onChange={handleChange}
+              sx={{ width: "15rem" }}
             />
           </Box>
           <Box>
             <TextField
+              sx={{ width: "15rem" }}
               name="url"
               disabled={isDisabled}
               id="url"
@@ -77,12 +87,30 @@ const EditApplicationForm = ({
               variant="outlined"
               value={data?.url}
               onChange={handleChange}
+              InputProps={{
+                endAdornment: data.url ? (
+                  <Button
+                    onClick={() => window.open(data.url)}
+                    sx={{
+                      marginRight: "-.5rem",
+                      width: 50,
+                      p: 1,
+                      height: "2rem",
+                    }}
+                    variant="contained">
+                    Go
+                  </Button>
+                ) : (
+                  <></>
+                ),
+              }}
             />
           </Box>
         </Box>
         <Box m="0 0 1rem 0" display="flex">
           <Box m="0 1rem 0 0">
             <TextField
+              sx={{ width: "15rem" }}
               name="location"
               disabled={isDisabled}
               id="location"
@@ -93,7 +121,7 @@ const EditApplicationForm = ({
             />
           </Box>
           <Box>
-            <FormControl sx={{ minWidth: "13.5rem" }}>
+            <FormControl sx={{ width: "15rem" }}>
               <InputLabel id="location-select-label">Job Type</InputLabel>
               <Select
                 disabled={isDisabled}
@@ -114,6 +142,7 @@ const EditApplicationForm = ({
         <Box m="2rem 0 1rem 0"></Box>
         <Box m="0 1rem 0 0">
           <TextField
+            sx={{ width: "15rem" }}
             disabled={isDisabled}
             name="salary"
             id="salary"
@@ -125,11 +154,27 @@ const EditApplicationForm = ({
         </Box>
         <Box m="2rem 0 1rem 0" display="flex">
           <Box m="0 1rem 0 0">
-            <TextField disabled id="appliedAt" label={data?.createdAt} />
+            <TextField
+              disabled
+              id="appliedAt"
+              variant="outlined"
+              value={formatDate(data?.createdAt)}
+              label="Applied On"
+              onChange={() => console.log()}
+              sx={{ width: "15rem" }}
+            />
           </Box>
           <Box>
             <Box m="0 1rem 0 0">
-              <TextField disabled id="lastUpdated" label={data?.createdAt} />
+              <TextField
+                disabled
+                id="lastUpdated"
+                variant="outlined"
+                value={formatDate(data?.createdAt)}
+                onChange={() => console.log()}
+                label="Last Updated"
+                sx={{ width: "15rem" }}
+              />
             </Box>
           </Box>
         </Box>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, useTheme } from "@mui/material";
-import { useGetApplicationsQuery } from "state/api";
+import { api, useGetApplicationsQuery } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -9,7 +9,6 @@ import { formatDate, formatJobType, salaryFormatter } from "utils";
 import { useNavigate } from "react-router-dom";
 
 const Applications = () => {
-  const theme = useTheme();
   const { data, isLoading } = useGetApplicationsQuery();
   const navigate = useNavigate();
 

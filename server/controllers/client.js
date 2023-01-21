@@ -91,15 +91,9 @@ export const getSingleApplication = async (req, res) => {
 
 export const updateApplication = async (req, res) => {
   try {
-    const { _id } = req.body;
-    // console.log("🚀 ~ file: client.js:96 ~ updateApplication ~ _id", _id);
-    // console.log("🚀 ~ file: client.js:98 ~ updateApplication ~ id", req.body);
-    const application = req.body;
-    // const results = await application.updateOne();
-    // console.log("🚀 ~ file: client.js:100 ~ updateApplication ~ results", results);
-
-    const doc = await Application.findOneAndUpdate({ _id: application._id }, application);
-    console.log("🚀 ~ file: client.js:103 ~ updateApplication ~ doc", doc);
+    await Application.findOneAndUpdate({ _id: req.body._id }, req.body).then((result) =>
+      res.status(200).json(result)
+    );
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

@@ -10,17 +10,26 @@ import Applications from "scenes/applications";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApplicationDetails from "scenes/applicationDetails";
-import NewApplications from "scenes/newApplications/NewApplications";
+import NewApplications from "scenes/newApplications";
+import Login from "scenes/login";
+import SignUp from "scenes/signup";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
   return (
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
+            <Route>
+              <Route path="/signup" element={<SignUp />} />
+              <Route index path="/login" element={<Login />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Route>
+
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />

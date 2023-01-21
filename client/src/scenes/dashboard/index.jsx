@@ -220,6 +220,7 @@ const Dashboard = () => {
               interview: data?.interview,
               review: data?.review,
               assessment: data?.assessment,
+              accepted: data?.accepted,
             }}
             total={data?.total || 0}
           />

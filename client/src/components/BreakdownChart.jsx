@@ -14,9 +14,10 @@ const BreakdownChart = ({ isDashboard = false, data = {}, total = 0 }) => {
 
   const colors = [
     theme.palette.secondary[500],
-    theme.palette.secondary[300],
+    theme.palette.secondary[100],
     theme.palette.secondary[300],
     theme.palette.secondary[500],
+    theme.palette.secondary[300],
   ];
 
   // data = data.filter((element) => element !== "total");
