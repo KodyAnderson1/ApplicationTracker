@@ -26,6 +26,7 @@ const LoginForm = () => {
       email: "",
       password: "",
     },
+
     // Validate Form
     validationSchema: Yup.object({
       email: Yup.string()
@@ -100,6 +101,7 @@ const LoginForm = () => {
           </Box>
           <Box display="flex" justifyContent="center">
             <Button
+              onClick={formik.handleSubmit}
               variant="contained"
               sx={{
                 width: "92%",
@@ -112,7 +114,6 @@ const LoginForm = () => {
           </Box>
           <Box justifyContent="end" display="flex" marginRight="1rem">
             <Button
-              onClick={formik.handleSubmit}
               sx={{
                 fontStyle: "italic",
                 color: `${theme.palette.grey[300]}`,
