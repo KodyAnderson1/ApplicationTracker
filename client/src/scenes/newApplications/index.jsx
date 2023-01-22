@@ -32,7 +32,7 @@ const NewApplications = () => {
             sx={{ display: "flex", justifyContent: "center" }}>
             Last 5 Applications
           </Typography>
-          <ListOfApplications limit={-5} />
+          <ListOfApplications limit={-7} />
         </Grid>
       </Grid>
     </Box>

@@ -1,7 +1,7 @@
 import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import { Dataset, PersonAdd, Assessment, Update, Search } from "@mui/icons-material";
+import { Dataset, PersonAdd, Assessment, Update, Search, Block } from "@mui/icons-material";
 import { Box, Button, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetDashboardQuery } from "state/api";
@@ -165,7 +165,7 @@ const Dashboard = () => {
           title="Rejected"
           value={data?.rejected || 0}
           description=""
-          icon={<Assessment sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
+          icon={<Block sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}
         />
 
         {/* ROW 2 */}

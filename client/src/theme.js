@@ -37,6 +37,15 @@ export const tokensDark = {
     // 900: "#070812",
   },
   secondary: {
+    // 100: "#ffffff",
+    // 200: "#ffffff",
+    // 300: "#ffffff",
+    // 400: "#ffffff",
+    // 500: "#ffffff",
+    // 600: "#cccccc",
+    // 700: "#999999",
+    // 800: "#666666",
+    // 900: "#333333",
     50: "#f0f0f0", // manually adjusted
     100: "#fff6e0",
     200: "#ffedc2",

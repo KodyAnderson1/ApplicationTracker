@@ -50,6 +50,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
   - [ ] Log In Page
 - [ ] Implement an easy way of updating status without going to details page
 - [x] Implement a "stack" of (5 - 7?) most recently applied to jobs on new form page
+- [ ] Add a date range for internships
 
 ## Future Development
 

@@ -12,13 +12,7 @@ const BreakdownChart = ({ isDashboard = false, data = {}, total = 0 }) => {
 
   if (!data) return "Loading...";
 
-  const colors = [
-    theme.palette.secondary[500],
-    theme.palette.secondary[100],
-    theme.palette.secondary[300],
-    theme.palette.secondary[500],
-    theme.palette.secondary[300],
-  ];
+  const colors = ["#d32f2f", theme.palette.secondary[500], "#0288d1", "#ff9800", "green"];
 
   // data = data.filter((element) => element !== "total");
 
@@ -101,7 +95,7 @@ const BreakdownChart = ({ isDashboard = false, data = {}, total = 0 }) => {
             justify: false,
             translateX: isDashboard ? 20 : 0,
             translateY: isDashboard ? 50 : 56,
-            itemsSpacing: 0,
+            itemsSpacing: 1,
             itemWidth: 85,
             itemHeight: 18,
             itemTextColor: "#999",
