@@ -1,38 +1,81 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-/*********** OLD ************ */
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.json(400).json({ message: "All fields are required" });
 
-// export const getLogin = async (req, res) => {
-//   // * Authenticate User
+  const foundUser = await User.findOne({ email }).exec();
+  if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
 
-//   try {
-//     const user = await User.findOne({
-//       email: req.body.email,
-//     }).select("-password");
+  const match = await bcrypt.compare(password, foundUser.password);
+  if (!match) return res.status(401).json({ message: "Unauthorized" });
 
-//     if (user) {
-//       const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
-//       res.status(200).json({ user: token });
-//     } else {
-//       res.status(200).json({ message: "No User Found" });
-//     }
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//   }
-// };
+  const accessToken = jwt.sign(
+    {
+      UserInfo: {
+        email: foundUser.email,
+        id: foundUser._id,
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        role: foundUser?.role,
+        applications: foundUser.applications,
+      },
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "1d" } // ! Change
+  );
 
-// export const getUser = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const user = await User.findById(id).select("-password");
+  const refreshToken = jwt.sign({ email: foundUser.email }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "1d",
+  });
 
-//     if (user) {
-//       const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
-//       res.status(200).json({ user: token });
-//     } else {
-//       res.status(200).json({ message: "No User Found" });
-//     }
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//   }
-// };
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true, // accessible only by web server
+    secure: true, // https
+    sameSite: "None", // cross-site cookie
+    maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expiry: set to match refresh token
+  });
+
+  // send accessToken containing email
+  res.json({ accessToken });
+};
+
+export const refresh = async (req, res) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (error, decoded) => {
+    if (error) return res.status(403).json({ message: "Forbidden" });
+
+    const foundUser = await User.findOne({ email: decoded.email });
+    if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          email: foundUser.email,
+          id: foundUser._id,
+          firstName: foundUser.firstName,
+          lastName: foundUser.lastName,
+          role: foundUser?.role,
+          applications: foundUser.applications,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1d" } // ! Change
+    );
+    res.json({ accessToken });
+  });
+};
+
+export const logout = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(204); // No content
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  res.json({ message: "Cookie Cleared" });
+};

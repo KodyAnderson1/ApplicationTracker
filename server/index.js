@@ -8,7 +8,7 @@ import morgan from "morgan";
 import jwt from "jsonwebtoken";
 // import passport from "passport";
 // import session from "express-session";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 // import { initialize as initPassport } from "./middleware/passport-config.js";
 
 // import User from "./models/User.js";
@@ -17,11 +17,10 @@ import jwt from "jsonwebtoken";
 
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
+import AuthRoutes from "./routes/auth.js";
 // import adminRoutes from "./routes/admin.js";
 
 // Schema imports
-
-import { AuthenticateToken } from "./middleware/auth.js";
 
 // Config
 dotenv.config();
@@ -33,30 +32,14 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Need i
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ origin: "http://localhost:3000", credentials: "include" }));
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(cookieParser(process.env.SESSION_SECRET));
-
-// initPassport(
-//   passport,
-//   (email) => User.findOne({ email: email }),
-//   (id) => User.findOne({ _id: id })
-// );
+app.use(cors());
+app.use(cookieParser());
 
 // Primary Routes
 
 app.use("/general", generalRoutes);
-app.use("/auth", generalRoutes);
-
-app.use("/client", AuthenticateToken, clientRoutes);
+app.use("/auth", AuthRoutes);
+app.use("/client", clientRoutes);
 // app.use("/admin", adminRoutes);
 
 // MONGOOSE SETUP

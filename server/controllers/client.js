@@ -2,10 +2,12 @@ import Application from "../models/Application.js";
 import User from "../models/User.js";
 
 export const getApplications = async (req, res) => {
-  const { id } = req.user._id;
+  const email = req.user;
+  if (!email) return res.status(400).json({ message: "Unauthorized" });
+
   try {
-    const user = await User.findById(id);
-    console.log("🚀 ~ file: client.js:9 ~ getApplications ~ user", user);
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Unauthorized" });
 
     const userApplications = await Application.find({
       _id: { $in: user.applications },
@@ -16,10 +18,17 @@ export const getApplications = async (req, res) => {
   }
 };
 
+// ! Secure this PLUS redo data grab all applications for user && filter with JS for now
 export const getDashboardStats = async (req, res) => {
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
   try {
-    const user = await User.findById(req.params.id);
+    const email = req.user;
+    if (!email) return res.status(400).json({ message: "Unauthorized" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Unauthorized" });
+
     const userApplications = await Application.find({
       _id: { $in: user.applications },
     });
@@ -69,10 +78,15 @@ export const getDashboardStats = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
+// ! Make sure req.body stays the same -OR- change here
 export const addNewAplication = async (req, res) => {
+  const email = req.user;
+  if (!email) return res.status(400).json({ message: "Unauthorized" });
+
   try {
-    const user = await User.findById("63701cc1f03239b7f700000e");
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Unauthorized" });
+
     const app = await new Application(req.body).save();
 
     user.applications.push(app.id);
@@ -84,6 +98,7 @@ export const addNewAplication = async (req, res) => {
   }
 };
 
+// ! Secure && check to make sure app belongs to user requesting it
 export const getSingleApplication = async (req, res) => {
   try {
     const application = await Application.findById(req.params.id);
@@ -93,6 +108,7 @@ export const getSingleApplication = async (req, res) => {
   }
 };
 
+// ! Secure && check to make sure app belongs to user updating it
 export const updateApplication = async (req, res) => {
   try {
     await Application.findOneAndUpdate({ _id: req.body._id }, req.body).then((result) =>
@@ -103,6 +119,7 @@ export const updateApplication = async (req, res) => {
   }
 };
 
+// ! Secure && check to make sure app belongs to user deleting it
 export const deleteApplication = async (req, res) => {
   try {
     Application.deleteOne({ _id: req.params.id }).then(
