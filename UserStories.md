@@ -24,6 +24,7 @@
      - [ ] Formik integration
    - [ ] Ability to Add to Programming Stack
    - [x] All Applications List
+   - [ ] Add server response error handling (401, 403)
 
 ## Server
 

@@ -2,7 +2,9 @@ import Application from "../models/Application.js";
 import User from "../models/User.js";
 
 export const getApplications = async (req, res) => {
-  const email = req.user;
+  const email = req.user.email;
+  console.log("🚀 ~ file: client.js:6 ~ getApplications ~ email", email);
+  console.log("🚀 ~ file: client.js:6 ~ getApplications ~ email", req.user);
   if (!email) return res.status(400).json({ message: "Unauthorized" });
 
   try {
@@ -20,10 +22,12 @@ export const getApplications = async (req, res) => {
 
 // ! Secure this PLUS redo data grab all applications for user && filter with JS for now
 export const getDashboardStats = async (req, res) => {
+  console.log("🚀 ~ file: client.js:23 ~ getDashboardStats ~ req", req.user);
+
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   try {
-    const email = req.user;
+    const email = req.user.email;
     if (!email) return res.status(400).json({ message: "Unauthorized" });
 
     const user = await User.findOne({ email });
@@ -37,30 +41,22 @@ export const getDashboardStats = async (req, res) => {
       (element) => element.updatedAt <= sevenDaysAgo && element.status !== "rejected"
     );
 
-    const data = await Application.aggregate([
-      {
-        $group: {
-          _id: null,
-          review: {
-            $sum: { $cond: [{ $eq: ["$status", "review"] }, 1, 0] },
-          },
-          rejected: {
-            $sum: { $cond: [{ $eq: ["$status", "rejected"] }, 1, 0] },
-          },
-          interview: {
-            $sum: { $cond: [{ $eq: ["$status", "interview"] }, 1, 0] },
-          },
-          assessment: {
-            $sum: { $cond: [{ $eq: ["$status", "assessment"] }, 1, 0] },
-          },
-          accepted: {
-            $sum: { $cond: [{ $eq: ["$status", "accepted"] }, 1, 0] },
-          },
-        },
-      },
-    ]);
+    let review = 0,
+      rejected = 0,
+      interview = 0,
+      assessment = 0,
+      accepted = 0;
 
-    const { review, rejected, interview, assessment, accepted, attention } = data[0];
+    userApplications.forEach((element) => {
+      if (element.status === "review") review++;
+      if (element.status === "rejected") rejected++;
+      if (element.status === "interview") interview++;
+      if (element.status === "assessment") assessment++;
+      if (element.status === "accepted") accepted++;
+    });
+
+    // const data = await Application.aggregate([
+
     const results = {
       review,
       rejected,
@@ -78,16 +74,17 @@ export const getDashboardStats = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-// ! Make sure req.body stays the same -OR- change here
+
 export const addNewAplication = async (req, res) => {
-  const email = req.user;
+  const email = req.user.email;
   if (!email) return res.status(400).json({ message: "Unauthorized" });
 
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Unauthorized" });
 
-    const app = await new Application(req.body).save();
+    const newApp = { ...req.body, user_id: req.user.id };
+    const app = await new Application(newApp).save();
 
     user.applications.push(app.id);
     user.save();
@@ -98,33 +95,52 @@ export const addNewAplication = async (req, res) => {
   }
 };
 
-// ! Secure && check to make sure app belongs to user requesting it
 export const getSingleApplication = async (req, res) => {
+  const email = req.user.email;
+  if (!email) return res.status(401).json({ message: "Unauthorized" });
+
   try {
     const application = await Application.findById(req.params.id);
-    res.status(200).json(application);
+
+    if (req.user.id !== application.user_id)
+      return res.status(401).json({ message: "Unauthorized" });
+    else res.status(200).json(application);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-// ! Secure && check to make sure app belongs to user updating it
 export const updateApplication = async (req, res) => {
+  const { email, id: usrId } = req.user;
+  if (!email || !usrId) return res.status(401).json({ message: "Unauthorized" });
+
   try {
-    await Application.findOneAndUpdate({ _id: req.body._id }, req.body).then((result) =>
-      res.status(200).json(result)
-    );
+    const application = await Application.findById(req.params.id);
+
+    if (usrId !== application.user_id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    } else {
+      const result = await application.update(req.body);
+      res.status(200).json(result);
+    }
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-// ! Secure && check to make sure app belongs to user deleting it
 export const deleteApplication = async (req, res) => {
+  const { email, id: usrId } = req.user;
+  if (!email || !usrId) return res.status(401).json({ message: "Unauthorized" });
+
   try {
-    Application.deleteOne({ _id: req.params.id }).then(
-      res.status(200).json({ message: "Delete Successful!" })
-    );
+    const application = await Application.findById(req.params.id);
+
+    if (usrId !== application.user_id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    } else {
+      application.delete();
+      res.status(200).json({ message: "Delete Successful!" });
+    }
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

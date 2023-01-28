@@ -5,22 +5,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-import jwt from "jsonwebtoken";
-// import passport from "passport";
-// import session from "express-session";
 import cookieParser from "cookie-parser";
-// import { initialize as initPassport } from "./middleware/passport-config.js";
-
-// import User from "./models/User.js";
-// import Application from "./models/Application.js";
-// import Job from "./models/Job.js";
 
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import AuthRoutes from "./routes/auth.js";
-// import adminRoutes from "./routes/admin.js";
-
-// Schema imports
+import { corsOptions } from "./config/corsOptions.js";
 
 // Config
 dotenv.config();
@@ -32,7 +22,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Need i
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 // Primary Routes

@@ -4,7 +4,15 @@ import { setUser } from "state";
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_BASE_URL,
-    // credentials: "include",
+    credentials: "include",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   reducerPath: "adminAPI",
   tagTypes: ["User", "Dashboard", "Applications", "SingleApplication"],

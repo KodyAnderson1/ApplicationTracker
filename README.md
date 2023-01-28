@@ -50,9 +50,9 @@ The frontend was built with React and is in the folder `client`. It can be insta
 - [x] Implement log in/out && users
   - [x] Create Account Page
   - [x] Log In Page
+  - [x] Log Out
 - [ ] Implement an easy way of updating status without going to details page
 - [x] Implement a "stack" of (5 - 7) most recently applied to jobs on new form page
-
 
 ## Future Development
 
@@ -63,7 +63,6 @@ The frontend was built with React and is in the folder `client`. It can be insta
 - [ ] Implement user settings
   - [ ] Update user information
 - [ ] Add a Jobs section that can track current jobs / relevant data
-
 
 ## Misc
 

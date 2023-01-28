@@ -18,20 +18,11 @@ import { useAddNewApplicationMutation, useGetApplicationsQuery } from "state/api
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-/**
- *
- * Change Company and position title to Autocomplete component with a list
- *    of all previously submitted position names and company names
- *
- * https://mui.com/material-ui/react-dialog/
- * ^^ Form dialog
- */
-
 export function NewApplicationForm() {
   const [addNewApplication] = useAddNewApplicationMutation();
   const { data, isLoading } = useGetApplicationsQuery();
 
-  const userId = useSelector((state) => state.global.userId);
+  // const userId = useSelector((state) => state.global.userId);
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const [previousPositions, setPreviousPositions] = useState([]);
 
@@ -44,7 +35,7 @@ export function NewApplicationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const modifiedState = { ...state, stack: stackToArray(state.stack), user_id: userId };
+    const modifiedState = { ...state, stack: stackToArray(state.stack) };
 
     addNewApplication(modifiedState);
 
