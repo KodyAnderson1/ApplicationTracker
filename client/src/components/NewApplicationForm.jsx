@@ -37,7 +37,7 @@ export function NewApplicationForm() {
 
   useEffect(() => {
     if (!isLoading) {
-      const firstStep = new Set(data.map((element) => element.positionTitle));
+      const firstStep = new Set(data?.map((element) => element.positionTitle));
       setPreviousPositions(Array.from(firstStep));
     }
   }, [data, isLoading]);

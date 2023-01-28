@@ -26,14 +26,14 @@ const Dashboard = () => {
   const { data, isLoading } = useGetDashboardQuery();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data", data);
-    if (!data || !data._id || data._id === "") {
-      navigate("/login");
-    } else {
-      console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data DATA GRAB FAIL");
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data", data);
+  //   if (!data || !data._id || data._id === "") {
+  //     navigate("/login");
+  //   } else {
+  //     console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data DATA GRAB FAIL");
+  //   }
+  // }, [data]);
 
   const columns = [
     {

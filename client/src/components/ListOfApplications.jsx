@@ -25,9 +25,9 @@ const ListOfApplications = ({ currId = null, limit = null, height = "55vh", titl
 
   useEffect(() => {
     if (!isLoading && limit !== null) {
-      setFilteredList(data.slice(limit).reverse());
+      setFilteredList(data?.slice(limit).reverse());
     } else if (!isLoading) {
-      setFilteredList(data.filter((ele) => ele._id !== currId).reverse());
+      setFilteredList(data?.filter((ele) => ele._id !== currId).reverse());
     }
   }, [currId, data, isLoading, limit]);
 

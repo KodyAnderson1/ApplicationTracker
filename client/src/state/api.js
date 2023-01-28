@@ -6,31 +6,9 @@ export const api = createApi({
     baseUrl: process.env.REACT_APP_BASE_URL,
     // credentials: "include",
   }),
-
   reducerPath: "adminAPI",
   tagTypes: ["User", "Dashboard", "Applications", "SingleApplication"],
   endpoints: (build) => ({
-    // getUser: build.query({
-    //   query(id) {
-    //     return {
-    //       url: `general/user/${id}`,
-    //       // credentials: "include",
-    //     };
-    //   },
-    //   transformResponse: (result) => {
-    //     return result; // result._id
-    //   },
-    //   async onQueryStarted(args, { dispatch, queryFulfilled }) {
-    //     try {
-    //       const { data } = await queryFulfilled;
-    //       console.log("🚀 ~ file: api.js:24 ~ onQueryStarted ~ data", data);
-
-    //       // dispatch(setUser(data));
-    //       dispatch(setUser(data));
-    //     } catch (error) {}
-    //   },
-    // }),
-
     getDashboard: build.query({
       query: (id) => `client/dashboard`,
       providesTags: ["Dashboard"],
@@ -84,38 +62,6 @@ export const api = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-      // invalidatesTags: ["User"],
-    }),
-    login: build.mutation({
-      query(data) {
-        return {
-          url: "general/login",
-          method: "POST",
-          body: data,
-          headers: {
-            credentials: "include",
-          },
-        };
-      },
-
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        try {
-          const res = await queryFulfilled;
-          if (res.data.user) {
-            await dispatch(setUser(res.data.user));
-          } else {
-            console.log("NO USER");
-          }
-        } catch (error) {}
-      },
-    }),
-    logoutUser: build.mutation({
-      query() {
-        return {
-          url: "logout",
-          // credentials: "include",
-        };
-      },
     }),
   }),
 });
@@ -128,5 +74,4 @@ export const {
   useUpdateApplicationMutation,
   useDeleteApplicationMutation,
   useAddUserMutation,
-  useLoginMutation,
 } = api;

@@ -24,16 +24,26 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import profileImage from "assets/headshot.jpg";
+import { useSendLogoutMutation } from "state/auth/authAPISlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, user }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
-
+  const [sendLogout, { isSuccess }] = useSendLogoutMutation();
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handleClose = () => {
+    sendLogout();
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    if (isSuccess) navigate("/");
+  }, [isSuccess, navigate]);
 
   return (
     <AppBar sx={{ position: "static", background: "none", boxShadow: "none" }}>
@@ -47,8 +57,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, user }) => {
             borderRadius="9px"
             gap="3rem"
             p="0.1rem 1.5rem">
-            <InputBase placeholder="Search... " />
-            <IconButton>
+            {/* <InputBase disabled placeholder="Search... " /> */}
+            <InputBase disabled placeholder="Disabled " />
+            <IconButton disabled>
               <Search />
             </IconButton>
           </FlexBetween>
