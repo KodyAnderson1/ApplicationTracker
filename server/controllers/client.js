@@ -2,8 +2,11 @@ import Application from "../models/Application.js";
 import User from "../models/User.js";
 
 export const getApplications = async (req, res) => {
+  const { id } = req.user._id;
   try {
-    const user = await User.findById("63701cc1f03239b7f700000e");
+    const user = await User.findById(id);
+    console.log("🚀 ~ file: client.js:9 ~ getApplications ~ user", user);
+
     const userApplications = await Application.find({
       _id: { $in: user.applications },
     });
@@ -20,7 +23,10 @@ export const getDashboardStats = async (req, res) => {
     const userApplications = await Application.find({
       _id: { $in: user.applications },
     });
-    const total = userApplications.length;
+
+    const needsAttentionApplications = userApplications.filter(
+      (element) => element.updatedAt <= sevenDaysAgo && element.status !== "rejected"
+    );
 
     const data = await Application.aggregate([
       {
@@ -41,9 +47,6 @@ export const getDashboardStats = async (req, res) => {
           accepted: {
             $sum: { $cond: [{ $eq: ["$status", "accepted"] }, 1, 0] },
           },
-          attention: {
-            $sum: { $cond: [{ $lte: ["$updatedAt", sevenDaysAgo] }, 1, 0] },
-          },
         },
       },
     ]);
@@ -55,9 +58,10 @@ export const getDashboardStats = async (req, res) => {
       interview,
       assessment,
       accepted,
-      attention,
-      total,
+      attention: needsAttentionApplications.length,
+      total: userApplications.length,
       applications: userApplications,
+      needAttentionApplications: needsAttentionApplications,
     };
 
     res.status(200).json(results);

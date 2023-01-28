@@ -5,6 +5,7 @@ import {
   Box,
   Divider,
   Drawer,
+  Icon,
   IconButton,
   List,
   ListItem,
@@ -28,7 +29,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import profileImage from "assets/headshot.jpg";
-
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const navItems = [
   {
     text: "Dashboard",
@@ -164,15 +165,9 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile, us
           <Box position="absolute" bottom="2rem">
             <Divider />
             <FlexBetween textTransform="none" gap="1rem" m="1.2rem 1.7rem -1rem 3rem">
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="40px"
-                width="40px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-              />
+              {/* <Icon sx={{ fontSize: "80" }}>
+                <AccountCircleIcon />
+              </Icon> */}
               <Box textAlign="left">
                 <Typography
                   fontWeight="bold"

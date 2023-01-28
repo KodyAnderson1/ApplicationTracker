@@ -8,7 +8,6 @@ import {
 } from "../controllers/client.js";
 
 import express from "express";
-
 const router = express.Router();
 
 router.get("/applications", getApplications);

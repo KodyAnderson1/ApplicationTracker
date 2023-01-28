@@ -1,12 +1,61 @@
 import User from "../models/User.js";
-// import OverallStat from "../models/OverallStat.js";
-import Application from "../models/Application.js";
+// import Application from "../models/Application.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
-    res.status(200).json(user);
+    const user = await User.findById(id).select("-password");
+
+    if (user) {
+      const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
+      res.status(200).json({ user: token });
+    } else {
+      res.status(200).json({ message: "No User Found" });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const addUser = async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = await new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+    user.save();
+    // console.log("🚀 ~ file: general.js:24 ~ addUser ~ user", user);
+    res.status(200).json({ message: "ok" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getLogin = async (req, res) => {
+  // * Authenticate User
+
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+    }).select("-password");
+
+    //
+    //
+    //
+    //
+    //
+
+    if (user) {
+      const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
+      res.status(200).json({ user: token });
+    } else {
+      res.status(200).json({ message: "No User Found" });
+    }
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

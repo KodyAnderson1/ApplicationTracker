@@ -47,16 +47,16 @@ export function NewApplicationForm() {
     const modifiedState = { ...state, stack: stackToArray(state.stack), user_id: userId };
 
     addNewApplication(modifiedState);
+
     dispatch({
       type: ACTION_TYPES.RESET,
       payload: INITIAL_STATE,
     });
-
     toast.success("Submitted!");
   };
 
-  const handleChange = (e, autocompleteVal = null) => {
-    if (autocompleteVal) {
+  const handleChange = (e, autocompleteVal = null, isAutoComplete = false) => {
+    if (isAutoComplete) {
       dispatch({
         type: ACTION_TYPES.UPDATE,
         payload: { name: "positionTitle", value: autocompleteVal },
@@ -97,7 +97,7 @@ export function NewApplicationForm() {
           id="positionTitleFormId"
           label="Position"
           variant="outlined"
-          onInputChange={(event, newInputValue) => handleChange(event, newInputValue)}
+          onInputChange={(event, newInputValue) => handleChange(event, newInputValue, true)}
           value={state.positionTitle}
           options={previousPositions}
           renderInput={(params) => <TextField {...params} label="Position" />}

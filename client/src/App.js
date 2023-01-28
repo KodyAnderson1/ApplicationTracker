@@ -25,13 +25,13 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route>
-              <Route path="/signup" element={<SignUp />} />
+              <Route path="/register" element={<SignUp />} />
               <Route index path="/login" element={<Login />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Route>
 
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add_new" element={<NewApplications />} />
               <Route path="/applications" element={<Applications />} />

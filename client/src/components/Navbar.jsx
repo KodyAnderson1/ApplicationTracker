@@ -77,7 +77,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, user }) => {
                 textTransform: "none",
                 gap: "1rem",
               }}>
-              <Box
+              {/* <Box
                 component="img"
                 alt="profile"
                 src={profileImage}
@@ -85,7 +85,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, user }) => {
                 width="32px"
                 borderRadius="50%"
                 sx={{ objectFit: "cover" }}
-              />
+              /> */}
               <Box textAlign="left">
                 <Typography
                   fontWeight="bold"

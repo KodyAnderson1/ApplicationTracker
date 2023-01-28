@@ -13,14 +13,27 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ChipComponent from "components/ChipComponent";
 import { formatJobType, salaryFormatter } from "utils";
+import NotificationCenter from "components/NotificationCenter";
+import { useEffect } from "react";
+import jwt_decode from "jwt-decode";
 
-// ! Put applications in a useContext?!
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const userId = useSelector((state) => state.global.userId);
-  const { data, isLoading } = useGetDashboardQuery(userId);
+  // const user = useSelector((state) => state.global.user);
+  // console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ user", user);
+
+  const { data, isLoading } = useGetDashboardQuery();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data", data);
+    if (!data || !data._id || data._id === "") {
+      navigate("/login");
+    } else {
+      console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data DATA GRAB FAIL");
+    }
+  }, [data]);
 
   const columns = [
     {
@@ -144,12 +157,12 @@ const Dashboard = () => {
           gridRow="span 2"
           backgroundColor={theme.palette.background.alt}
           p="1rem"
-          borderRadius="0.55rem">
-          Notification Center
-          {/* <NotificationCenter /> */}
+          borderRadius="0.55rem"
+          sx={{ overflowY: "scroll" }}>
+          <NotificationCenter data={data?.needAttentionApplications || []} />
         </Box>
         <StatBox
-          title="Need Status Updates"
+          title="Needs Update"
           value={data?.attention || 0} // !
           description="7+ Days Old"
           icon={<Update sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />}

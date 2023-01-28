@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Button, Grid, useTheme } from "@mui/material";
 import EditApplicationForm from "components/EditApplicationForm";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
@@ -14,8 +14,6 @@ import { toast } from "react-toastify";
 import ListOfApplications from "components/ListOfApplications";
 import { ACTION_TYPES, formReducer } from "state/formReducer";
 import { useSelector } from "react-redux";
-
-// ! Find out why stackChips wouldn't work w/o its own state.
 
 const ApplicationDetails = () => {
   const theme = useTheme();
@@ -113,7 +111,10 @@ const ApplicationDetails = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
-        <Header title={`Details For  ${data.companyName}`} subtitle={`${data.positionTitle}`} />
+        <Header
+          title={`Update ${data.companyName} Application`}
+          subtitle={`${data.positionTitle}`}
+        />
         <Box display="flex" gap={2}>
           {editable ? (
             <>
@@ -152,7 +153,8 @@ const ApplicationDetails = () => {
           </Button>
         </Box>
       </FlexBetween>
-      <Grid container direction="row" sx={{ height: "55vh" }}>
+
+      <Grid container>
         <Grid item xs={9}>
           <EditApplicationForm
             isDisabled={!editable}
@@ -162,14 +164,12 @@ const ApplicationDetails = () => {
             stackChips={stackChips}
           />
         </Grid>
-        <Grid item xs={3} sx={{ height: "55vh", overflowY: "scroll" }}>
-          <Typography
-            variant="h3"
-            color={theme.palette.secondary[300]}
-            sx={{ display: "flex", justifyContent: "center" }}>
-            All Applications
-          </Typography>
-          <ListOfApplications currId={state?._id || data._id || null} />
+        <Grid item xs={3} sx={{ marginTop: "2rem" }}>
+          <ListOfApplications
+            currId={state?._id || data._id || null}
+            title={"All Applications"}
+            height={"70vh"}
+          />
         </Grid>
       </Grid>
     </Box>

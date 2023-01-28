@@ -11,22 +11,40 @@ import {
   Link,
   SvgIcon,
   useTheme,
+  Tooltip,
 } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useLoginMutation } from "state/api";
+import { useEffect } from "react";
+import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  // const userId = useSelector((state) => state.global.userId);
+  const [login] = useLoginMutation();
   const theme = useTheme();
+
+  // useEffect(() => {
+  //   console.log("🚀 ~ file: LoginForm.jsx:32 ~ useEffect ~ USER ID!!!!!!!", userId);
+  //   if (response.status === "fulfilled" && response.data.user) {
+  //     const user = jwt_decode(response.data.user);
+  //     console.log("🚀 ~ file: LoginForm.jsx:35 ~ useEffect ~ user", user);
+  //   } else {
+  //     toast.error("User Not Found!");
+  //   }
+  // }, [response]);
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-
     // Validate Form
     validationSchema: Yup.object({
       email: Yup.string()
@@ -40,8 +58,14 @@ const LoginForm = () => {
     }),
 
     // Submit Form
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      // console.log(values);
+      const usr = await login(values).unwrap();
+      console.log("🚀 ~ file: LoginForm.jsx:64 ~ LoginForm ~ usr", usr);
+
+      if (usr.user) {
+        // navigate("/dashboard");
+      }
     },
   });
 
@@ -57,7 +81,7 @@ const LoginForm = () => {
           <Typography variant="h5">New?</Typography>
           <Link
             underline="hover"
-            to="/signup"
+            to="/register"
             variant="h5"
             component={RouterLink}
             sx={{
@@ -73,7 +97,7 @@ const LoginForm = () => {
           <Box display="flex" justifyContent="center" color="black">
             <TextField
               required
-              error={formik.errors.email}
+              error={formik.errors.email ? true : false}
               helperText={`${formik.errors.email ? formik.errors.email : " "}`}
               sx={{ width: "95%" }}
               name="email"
@@ -87,7 +111,7 @@ const LoginForm = () => {
           <Box display="flex" justifyContent="center">
             <TextField
               required
-              error={formik.errors.password}
+              error={formik.errors.password ? true : false}
               helperText={`${formik.errors.password ? formik.errors.password : " "}`}
               type="password"
               sx={{ width: "95%" }}
@@ -103,25 +127,22 @@ const LoginForm = () => {
             <Button
               onClick={formik.handleSubmit}
               variant="contained"
-              sx={{
-                width: "92%",
-                marginTop: ".5rem",
-                backgroundColor: "#0d6efd",
-                fontWeight: "bold",
-              }}>
+              sx={{ width: "92%", backgroundColor: "#0d6efd", fontWeight: "bold" }}>
               Log In
             </Button>
           </Box>
           <Box justifyContent="end" display="flex" marginRight="1rem">
-            <Button
-              sx={{
-                fontStyle: "italic",
-                color: `${theme.palette.grey[300]}`,
-                marginBottom: "-1rem",
-              }}
-              variant="text">
-              Forgot password?
-            </Button>
+            <Tooltip title="Not implemented">
+              <Button
+                sx={{
+                  fontStyle: "italic",
+                  color: `${theme.palette.grey[300]}`,
+                  marginBottom: "-1rem",
+                }}
+                variant="text">
+                Forgot password?
+              </Button>
+            </Tooltip>
           </Box>
           <Divider />
           <ProviderSignIn />

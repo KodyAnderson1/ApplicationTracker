@@ -1,10 +1,22 @@
 import { Box, Button, Link, Paper, Stack, TextField, Typography } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import React from "react";
+import { useAddUserMutation } from "state/api";
+import { useEffect } from "react";
 
 const SignUpForm = () => {
+  const [addUser, response] = useAddUserMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (response.status === "fulfilled" && response.data.message === "ok") {
+      console.log("🚀 ~ file: SignUpForm.jsx:11 ~ SignUpForm ~ response", response);
+      navigate("/login");
+    }
+  }, [response]);
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -32,7 +44,9 @@ const SignUpForm = () => {
 
     // Submit Form
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
+      addUser(values);
+      // formik.resetForm();
     },
   });
 

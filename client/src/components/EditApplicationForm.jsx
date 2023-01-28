@@ -1,13 +1,13 @@
 import { JOB_TYPE } from "constants";
 import { STATUS_TYPES } from "constants";
-import React, { useEffect, useState } from "react";
-import { ACTION_TYPES } from "../state/formReducer";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import { formatDate } from "utils";
-import { useTheme } from "@emotion/react";
 
 const EditApplicationForm = ({
   isDisabled = false,
@@ -24,125 +23,117 @@ const EditApplicationForm = ({
   setStackChips,
   stackChips,
 }) => {
-  const theme = useTheme();
-
   return (
-    <>
+    <Grid container direction="column">
       <Box component="form" p="2rem">
-        <Box m="0 0 1rem 0" display="flex">
-          <Box m="0 1rem 0 0">
-            <TextField
-              // fullWidth
-              sx={{ width: "15rem" }}
-              name="companyName"
-              disabled={isDisabled}
-              id="companyName"
-              label="Company Name"
-              variant="outlined"
-              onChange={handleChange}
-              value={data?.companyName}
-            />
-          </Box>
-          <Box>
-            <FormControl sx={{ width: "15rem" }}>
-              <InputLabel id="status-select-label">Status</InputLabel>
-              <Select
-                // fullWidth
-                disabled={isDisabled}
-                name="status"
-                labelId="status-select-label"
-                id="status-select"
-                value={data?.status === undefined ? "" : data.status}
-                label="Status"
-                onChange={handleChange}>
-                <MenuItem value={STATUS_TYPES.REVIEW}>Under Review</MenuItem>
-                <MenuItem value={STATUS_TYPES.REJECTED}>Rejected</MenuItem>
-                <MenuItem value={STATUS_TYPES.ACCEPTED}>Accepted</MenuItem>
-                <MenuItem value={STATUS_TYPES.INTERVIEW}>Interview</MenuItem>
-                <MenuItem value={STATUS_TYPES.ASSESSMENT}>Assessment</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Box>
-        <Box m="0 0 1rem 0" display="flex">
-          <Box m="0 1rem 0 0">
-            <TextField
-              name="positionTitle"
-              disabled={isDisabled}
-              id="positionTitle"
-              label="Position"
-              variant="outlined"
-              value={data?.positionTitle}
-              onChange={handleChange}
-              sx={{ width: "15rem" }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              sx={{ width: "15rem" }}
-              name="url"
-              disabled={isDisabled}
-              id="url"
-              label="URL"
-              variant="outlined"
-              value={data?.url}
-              onChange={handleChange}
-              InputProps={{
-                endAdornment: data.url ? (
-                  <Button
-                    onClick={() => window.open(data.url)}
-                    sx={{
-                      marginRight: "-.5rem",
-                      width: 50,
-                      p: 1,
-                      height: "2rem",
-                    }}
-                    variant="contained">
-                    Go
-                  </Button>
-                ) : (
-                  <></>
-                ),
-              }}
-            />
-          </Box>
-        </Box>
-        <Box m="0 0 1rem 0" display="flex">
-          <Box m="0 1rem 0 0">
-            <TextField
-              sx={{ width: "15rem" }}
-              name="location"
-              disabled={isDisabled}
-              id="location"
-              label="Location"
-              variant="outlined"
-              value={data?.location}
-              onChange={handleChange}
-            />
-          </Box>
-          <Box>
-            <FormControl sx={{ width: "15rem" }}>
-              <InputLabel id="location-select-label">Job Type</InputLabel>
-              <Select
-                disabled={isDisabled}
-                name="jobType"
-                labelId="location-select-label"
-                id="jobTypeSelect"
-                value={data?.jobType === undefined ? "" : data.jobType}
-                label="jobType"
-                onChange={handleChange}>
-                <MenuItem value={JOB_TYPE.REMOTE}>Remote</MenuItem>
-                <MenuItem value={JOB_TYPE.IN_PERSON}>In Person</MenuItem>
-                <MenuItem value={JOB_TYPE.HYBRID}>Hybrid</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Box>
-        <Box m="2rem 0 1rem 0"></Box>
-        <Box m="2rem 0 1rem 0"></Box>
-        <Box m="0 1rem 0 0">
+        {/* <Grid item> */}
+        <Grid item>
           <TextField
-            sx={{ width: "15rem" }}
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+            name="companyName"
+            disabled={isDisabled}
+            id="companyName"
+            label="Company Name"
+            variant="outlined"
+            onChange={handleChange}
+            value={data?.companyName}
+          />
+        </Grid>
+        <Grid item>
+          <FormControl sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}>
+            <InputLabel id="status-select-label">Status</InputLabel>
+            <Select
+              // fullWidth
+              disabled={isDisabled}
+              name="status"
+              labelId="status-select-label"
+              id="status-select"
+              value={data?.status === undefined ? "" : data.status}
+              label="Status"
+              onChange={handleChange}>
+              <MenuItem value={STATUS_TYPES.REVIEW}>Under Review</MenuItem>
+              <MenuItem value={STATUS_TYPES.REJECTED}>Rejected</MenuItem>
+              <MenuItem value={STATUS_TYPES.ACCEPTED}>Accepted</MenuItem>
+              <MenuItem value={STATUS_TYPES.INTERVIEW}>Interview</MenuItem>
+              <MenuItem value={STATUS_TYPES.ASSESSMENT}>Assessment</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          <TextField
+            name="positionTitle"
+            disabled={isDisabled}
+            id="positionTitle"
+            label="Position"
+            variant="outlined"
+            value={data?.positionTitle}
+            onChange={handleChange}
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+            name="url"
+            disabled={isDisabled}
+            id="url"
+            label="URL"
+            variant="outlined"
+            value={data?.url}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: data.url ? (
+                <Button
+                  onClick={() => window.open(data.url)}
+                  sx={{
+                    marginRight: "-.5rem",
+                    width: 50,
+                    p: 1,
+                    height: "2rem",
+                  }}
+                  variant="contained">
+                  Go
+                </Button>
+              ) : (
+                <></>
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+            name="location"
+            disabled={isDisabled}
+            id="location"
+            label="Location"
+            variant="outlined"
+            value={data?.location}
+            onChange={handleChange}
+          />
+        </Grid>
+        {/* </Grid> */}
+        {/* <Grid item> */}
+        <Grid item>
+          <FormControl sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}>
+            <InputLabel id="location-select-label">Job Type</InputLabel>
+            <Select
+              disabled={isDisabled}
+              name="jobType"
+              labelId="location-select-label"
+              id="jobTypeSelect"
+              value={data?.jobType === undefined ? "" : data.jobType}
+              label="jobType"
+              onChange={handleChange}>
+              <MenuItem value={JOB_TYPE.REMOTE}>Remote</MenuItem>
+              <MenuItem value={JOB_TYPE.IN_PERSON}>In Person</MenuItem>
+              <MenuItem value={JOB_TYPE.HYBRID}>Hybrid</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          <TextField
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
             disabled={isDisabled}
             name="salary"
             id="salary"
@@ -151,43 +142,40 @@ const EditApplicationForm = ({
             onChange={handleChange}
             value={data?.salary || 0}
           />
-        </Box>
-        <Box m="2rem 0 1rem 0" display="flex">
-          <Box m="0 1rem 0 0">
-            <TextField
-              disabled
-              id="appliedAt"
-              variant="outlined"
-              value={formatDate(data?.createdAt)}
-              label="Applied On"
-              onChange={() => console.log()}
-              sx={{ width: "15rem" }}
-            />
-          </Box>
-          <Box>
-            <Box m="0 1rem 0 0">
-              <TextField
-                disabled
-                id="lastUpdated"
-                variant="outlined"
-                value={formatDate(data?.createdAt)}
-                onChange={() => console.log()}
-                label="Last Updated"
-                sx={{ width: "15rem" }}
-              />
-            </Box>
-          </Box>
-        </Box>
-        <Box>
+        </Grid>
+        <Grid item>
+          <TextField
+            disabled
+            id="appliedAt"
+            variant="outlined"
+            value={formatDate(data?.createdAt)}
+            label="Applied On"
+            onChange={() => console.log()}
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            disabled
+            id="lastUpdated"
+            variant="outlined"
+            value={formatDate(data?.createdAt)}
+            onChange={() => console.log()}
+            label="Last Updated"
+            sx={{ width: "15rem", margin: "1rem 0rem 0 0" }}
+          />
+        </Grid>
+        <Grid item>
           <ChipsArray
             name="stack"
             isDisabled={isDisabled}
             setStackChips={setStackChips}
             stackChips={stackChips}
           />
-        </Box>
+        </Grid>
+        {/* </Grid> */}
       </Box>
-    </>
+    </Grid>
   );
 };
 

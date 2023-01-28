@@ -14,25 +14,12 @@ const NewApplications = () => {
         <Header title={`Add Application`} subtitle={`Add An Application To Track!`} />
       </FlexBetween>
       <Grid container>
-        <Grid item xs={2} sx={{ m: "2rem 2rem" }}>
+        <Grid item xs={12} sm={5} md={2} lg={5} sx={{ m: "2rem 2rem" }}>
           <NewApplicationForm />
         </Grid>
-        <Grid item xs={6}>
-          {/* <Typography
-            variant="h3"
-            color={theme.palette.secondary[300]}
-            sx={{ display: "flex", justifyContent: "center" }}>
-            Common Resume Questions
-          </Typography> */}
-        </Grid>
-        <Grid item xs={3}>
-          <Typography
-            variant="h3"
-            color={theme.palette.secondary[300]}
-            sx={{ display: "flex", justifyContent: "center" }}>
-            Last 5 Applications
-          </Typography>
-          <ListOfApplications limit={-7} />
+        <Grid item xs={6} sm={3} md={2} lg={3}></Grid>
+        <Grid item xs={12} sm={3} md={6} lg={3} sx={{ m: "2rem 0 0 0" }}>
+          <ListOfApplications limit={-7} height={"58vh"} title={"Last 7 Applications"} />
         </Grid>
       </Grid>
     </Box>
