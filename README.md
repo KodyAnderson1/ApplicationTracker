@@ -31,7 +31,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
 ## Current Development
 
 - [x] Attatch form to state and database
-- [ ] Finish Dashboard (Homepage)
+- [x] Finish Dashboard (Homepage)
   - [x] Create a Notification Center
   - [x] Create limited statistics on data
   - [x] Implement date logic and remove placeholder values
