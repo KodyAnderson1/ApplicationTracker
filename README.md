@@ -30,7 +30,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
 
 ## Current Development
 
-### See the [UserStories.md](https://github.com/KodyAnderson1/ApplicationTracker/blob/main/UserStories.md) file to see current development checklist!
+### See [UserStories.md](https://github.com/KodyAnderson1/ApplicationTracker/blob/main/UserStories.md) to see the current development checklist!
 
 ## Future Development
 
