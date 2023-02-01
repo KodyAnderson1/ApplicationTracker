@@ -12,27 +12,26 @@ import {
   SvgIcon,
   useTheme,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-import { useEffect } from "react";
-import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 import { useLoginMutation } from "state/auth/authAPISlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "state/auth/authSlice";
+
+import usePersist from "hooks/usePersist";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
-  // const userId = useSelector((state) => state.global.userId);
-  // const [login] = useLoginMutation();
+  const [persist, setPersist] = usePersist();
+
   const theme = useTheme();
 
   const formik = useFormik({
@@ -75,8 +74,8 @@ const LoginForm = () => {
   });
 
   return (
-    <Box component="form">
-      <Paper elevation={20} sx={{ width: "125%", height: "30rem" }}>
+    <Box component="form" sx={{ width: "45rem" }}>
+      <Paper elevation={20} sx={{ height: "30rem" }}>
         <Box justifyContent="center" alignItems="center" display="flex">
           <Typography sx={{ marginTop: "1rem" }} variant="h1">
             Log In
@@ -159,11 +158,16 @@ const LoginForm = () => {
 };
 
 export function ProviderSignIn() {
+  const isNonMediumScreens = useMediaQuery("(min-width: 480px)");
   const gridItemStyles = {
     display: "flex",
     justifyContent: "center",
     overflow: "hidden",
   };
+  const sharedButtonStyles = isNonMediumScreens
+    ? { fontWeight: "bold", width: "86%" }
+    : { fontWeight: "bold", width: "86%" };
+
   const initialText = "Sign In With";
   return (
     <>
@@ -171,10 +175,10 @@ export function ProviderSignIn() {
         <Grid item xs={4} sx={gridItemStyles}>
           <Tooltip title="Coming Soon!">
             <Button
-              sx={{ width: "86%", backgroundColor: "black", fontWeight: "bold" }}
+              sx={[{ backgroundColor: "black" }, sharedButtonStyles]}
               variant="contained"
               startIcon={<GitHubIcon />}>
-              {`${initialText} GitHub`}
+              {isNonMediumScreens ? `${initialText} GitHub` : <></>}
             </Button>
           </Tooltip>
         </Grid>
@@ -183,7 +187,7 @@ export function ProviderSignIn() {
           <Tooltip title="Coming Soon!">
             <Button
               variant="contained"
-              sx={{ width: "86%", backgroundColor: "white", color: "black", fontWeight: "bold" }}
+              sx={[{ backgroundColor: "white", color: "black" }, sharedButtonStyles]}
               startIcon={
                 <SvgIcon>
                   <svg
@@ -213,7 +217,7 @@ export function ProviderSignIn() {
                   </svg>
                 </SvgIcon>
               }>
-              {`${initialText} Google`}
+              {isNonMediumScreens ? `${initialText} Google` : <></>}
             </Button>
           </Tooltip>
         </Grid>
@@ -221,9 +225,9 @@ export function ProviderSignIn() {
           <Tooltip title="Coming Soon!">
             <Button
               variant="contained"
-              sx={{ width: "86%", backgroundColor: "#055C9D", fontWeight: "bold" }}
+              sx={[{ backgroundColor: "#055C9D" }, sharedButtonStyles]}
               startIcon={<FacebookIcon />}>
-              {`${initialText} Facebook`}
+              {isNonMediumScreens ? `${initialText} Facebook` : <></>}
             </Button>
           </Tooltip>
         </Grid>

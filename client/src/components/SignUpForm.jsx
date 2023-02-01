@@ -5,17 +5,11 @@ import * as Yup from "yup";
 import React from "react";
 import { useAddUserMutation } from "state/api";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const SignUpForm = () => {
   const [addUser, response] = useAddUserMutation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (response.status === "fulfilled" && response.data.message === "ok") {
-      console.log("🚀 ~ file: SignUpForm.jsx:11 ~ SignUpForm ~ response", response);
-      navigate("/login");
-    }
-  }, [response]);
 
   const formik = useFormik({
     initialValues: {
@@ -44,17 +38,24 @@ const SignUpForm = () => {
 
     // Submit Form
     onSubmit: (values) => {
-      // console.log(values);
       addUser(values);
-      // formik.resetForm();
     },
   });
 
-  // console.log(formik.errors);
+  useEffect(() => {
+    if (response.status === "fulfilled" && response.data.message === "ok") {
+      formik.resetForm();
+      navigate("/login");
+    } else if (response.status === "rejected") {
+      formik.setFieldError("email", "Email already in use!");
+      toast.error("Email already in use!");
+    }
+    // console.log(response.status);
+  }, [response, navigate]);
 
   return (
-    <Box component="form" id="signUpForm">
-      <Paper elevation={20} sx={{ width: "30rem", height: "50rem" }}>
+    <Box component="form" id="signUpForm" width="30rem">
+      <Paper elevation={20} sx={{ height: "50rem" }}>
         <Box display="block" width="15rem" margin="auto" height="15rem">
           <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -162,20 +163,3 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
-
-{
-  /* {keys.map((element) => {
-            return (
-              <Box key={element} display="flex" justifyContent="center" color="black">
-                <TextField
-                  required
-                  sx={{ width: "75%" }}
-                  name={`${element}`}
-                  id={`${element}-login`}
-                  label={`${fields[element]}`}
-                  variant="standard"
-                />
-              </Box>
-            );
-          })} */
-}

@@ -13,6 +13,7 @@ import ApplicationDetails from "scenes/applicationDetails";
 import NewApplications from "scenes/newApplications";
 import Login from "scenes/login";
 import SignUp from "scenes/signup";
+import PersistLogin from "state/auth/PersistLogin";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -32,10 +33,12 @@ function App() {
             </Route>
 
             <Route element={<Layout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/add_new" element={<NewApplications />} />
-              <Route path="/applications" element={<Applications />} />
-              <Route path="/details/:id" element={<ApplicationDetails />} />
+              <Route element={<PersistLogin />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/add_new" element={<NewApplications />} />
+                <Route path="/applications" element={<Applications />} />
+                <Route path="/details/:id" element={<ApplicationDetails />} />
+              </Route>
             </Route>
           </Routes>
           <ToastContainer

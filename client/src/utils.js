@@ -33,6 +33,7 @@ export function formatJobType(params) {
 }
 
 export function formatDate(params) {
+  if (!params) return "";
   const [date, time] = params.split(["T"]);
   const [actualTime] = time.split(".");
   return `${date} ${actualTime}`;

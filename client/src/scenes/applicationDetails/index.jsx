@@ -6,6 +6,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteApplicationMutation,
+  useGetApplicationsQuery,
   useGetSingleApplicationQuery,
   useUpdateApplicationMutation,
 } from "state/api";
@@ -15,31 +16,42 @@ import ListOfApplications from "components/ListOfApplications";
 import { ACTION_TYPES, formReducer } from "state/formReducer";
 import { useSelector } from "react-redux";
 
-const ApplicationDetails = () => {
+// ! Move state and form management into the actual form. Pass data down still? Or just URL params?
+const ApplicationDetails = ({ appId }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const urlParams = useParams();
-  const appId = urlParams.id;
-  const userId = useSelector((state) => state.global.userId);
 
+  appId = urlParams.id;
+  // console.log("🚀 ~ file: index.jsx:25 ~ ApplicationDetails ~ appId", appId);
+  // const isLoading = false;
   const [editable, setIsEditable] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const { data, isLoading } = useGetSingleApplicationQuery(appId);
-  const [state, dispatch] = useReducer(formReducer, data);
+  // const { data: application, isLoading } = useGetSingleApplicationQuery(appId);
+  const { application, isLoading } = useGetApplicationsQuery("Applications", {
+    selectFromResult: ({ data, error, isLoading }) => ({
+      application: data?.filter((d) => d._id === appId),
+      isLoading,
+    }),
+  });
+
+  const [state, dispatch] = useReducer(formReducer, application);
 
   const [deleteApp] = useDeleteApplicationMutation();
   const [updateApplication] = useUpdateApplicationMutation();
   const [stackChips, setStackChips] = useState();
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setStackChips(data.stack);
+    if (application) {
+      const d = { ...application };
+      console.log("🚀 ~ file: index.jsx:47 ~ useEffect ~ application", d[0]);
+      setStackChips(application.stack);
       dispatch({
         type: ACTION_TYPES.RESET,
-        payload: data,
+        payload: d[0],
       });
     }
-  }, [data, isLoading]);
+  }, [isLoading, appId]);
 
   const handleEditable = () => {
     setIsEditable(!editable);
@@ -55,7 +67,7 @@ const ApplicationDetails = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    const modifiedState = { ...state, stack: stackChips, user_id: userId };
+    const modifiedState = { ...state, stack: stackChips };
     setStackChips(modifiedState.stack);
     updateApplication(modifiedState, state._id);
     handleEditable();
@@ -106,14 +118,14 @@ const ApplicationDetails = () => {
     </>
   );
 
-  if (isLoading || !data || !state) return <h1>Loading...</h1>;
+  if (!application || !state) return <h1>Loading...</h1>;
 
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Header
-          title={`Update ${data.companyName} Application`}
-          subtitle={`${data.positionTitle}`}
+          title={`Update ${state.companyName} Application`}
+          subtitle={`${state.positionTitle}`}
         />
         <Box display="flex" gap={2}>
           {editable ? (
@@ -166,7 +178,7 @@ const ApplicationDetails = () => {
         </Grid>
         <Grid item xs={3} sx={{ marginTop: "2rem" }}>
           <ListOfApplications
-            currId={state?._id || data._id || null}
+            currId={state?._id || application?._id || null}
             title={"All Applications"}
             height={"70vh"}
           />

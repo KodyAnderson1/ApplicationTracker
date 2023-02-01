@@ -8,32 +8,18 @@ import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
 import BreakdownChart from "components/BreakdownChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ChipComponent from "components/ChipComponent";
 import { formatJobType, salaryFormatter } from "utils";
 import NotificationCenter from "components/NotificationCenter";
-import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  // const user = useSelector((state) => state.global.user);
-  // console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ user", user);
 
   const { data, isLoading } = useGetDashboardQuery();
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data", data);
-  //   if (!data || !data._id || data._id === "") {
-  //     navigate("/login");
-  //   } else {
-  //     console.log("🚀 ~ file: index.jsx:24 ~ Dashboard ~ data DATA GRAB FAIL");
-  //   }
-  // }, [data]);
 
   const columns = [
     {

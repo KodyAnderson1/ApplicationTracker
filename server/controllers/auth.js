@@ -28,7 +28,7 @@ export const login = async (req, res) => {
   );
 
   const refreshToken = jwt.sign({ email: foundUser.email }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "7d",
   });
 
   res.cookie("jwt", refreshToken, {

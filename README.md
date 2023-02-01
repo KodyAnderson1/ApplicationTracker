@@ -30,29 +30,7 @@ The frontend was built with React and is in the folder `client`. It can be insta
 
 ## Current Development
 
-- [x] Attatch form to state and database
-- [x] Finish Dashboard (Homepage)
-  - [x] Create a Notification Center
-  - [x] Create limited statistics on data
-  - [x] Implement date logic and remove placeholder values
-    - [x] Logic to track last status change && if over 7 days, notifies (Started)
-      - [x] Put Link to actual application in Notification Center for ease of change
-      - [x] "Needs Attention" widgit have an actual count
-- [x] For the Position input on the new application form, implment an autocomplete form with values previously submitted
-- [x] Implement a form to update existing applications
-- [x] Include recommended programming stacks in data gathered/displayed
-- [ ] Form Validation
-  - [ ] Implement Formik
-    - [ ] Implement Formik in New && Update Application Forms
-    - [x] Implement Formik Log In / Sign-Up
-- [x] Details page for each application with more details
-  - [x] Programming Stack listed
-- [x] Implement log in/out && users
-  - [x] Create Account Page
-  - [x] Log In Page
-  - [x] Log Out
-- [ ] Implement an easy way of updating status without going to details page
-- [x] Implement a "stack" of (5 - 7) most recently applied to jobs on new form page
+### See the "UserStories.md" file to see current development checklist!
 
 ## Future Development
 
@@ -62,7 +40,6 @@ The frontend was built with React and is in the folder `client`. It can be insta
 - [ ] Implement an administrator view
 - [ ] Implement user settings
   - [ ] Update user information
-- [ ] Add a Jobs section that can track current jobs / relevant data
 
 ## Misc
 
