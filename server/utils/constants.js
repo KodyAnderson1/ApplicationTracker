@@ -1,0 +1,15 @@
+export const HTTP_MESSAGES = {
+  SUCCESS: "Success",
+  ERROR: "Error",
+  NOT_FOUND: "Not Found",
+  BAD_REQUEST: "Bad Request",
+  UNAUTHORIZED: "Unauthorized",
+  FORBIDDEN: "Forbidden",
+  CONFLICT: "Conflict",
+  INTERNAL_SERVER_ERROR: "Internal Server Error",
+  SERVICE_UNAVAILABLE: "Service Unavailable",
+  CREATED: "Created",
+  UPDATED: "Updated",
+  DELETED: "Deleted",
+  NO_CONTENT: "No Content",
+};

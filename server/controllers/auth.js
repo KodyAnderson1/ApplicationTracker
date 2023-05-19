@@ -1,16 +1,17 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { HTTP_MESSAGES } from "../utils/constants.js";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.json(400).json({ message: "All fields are required" });
 
   const foundUser = await User.findOne({ email }).exec();
-  if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+  if (!foundUser) return res.status(401).json({ message: HTTP_MESSAGES.UNAUTHORIZED });
 
   const match = await bcrypt.compare(password, foundUser.password);
-  if (!match) return res.status(401).json({ message: "Unauthorized" });
+  if (!match) return res.status(401).json({ message: HTTP_MESSAGES.UNAUTHORIZED });
 
   const accessToken = jwt.sign(
     {
@@ -45,7 +46,7 @@ export const login = async (req, res) => {
 export const refresh = async (req, res) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+  if (!cookies?.jwt) return res.status(401).json({ message: HTTP_MESSAGES.UNAUTHORIZED });
 
   const refreshToken = cookies.jwt;
 
@@ -53,7 +54,7 @@ export const refresh = async (req, res) => {
     if (error) return res.status(403).json({ message: "Forbidden" });
 
     const foundUser = await User.findOne({ email: decoded.email });
-    if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+    if (!foundUser) return res.status(401).json({ message: HTTP_MESSAGES.UNAUTHORIZED });
 
     const accessToken = jwt.sign(
       {
